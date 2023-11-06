@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
@@ -32,8 +32,8 @@ export const Header = ({ alt }) => {
           </div>
         </h1>
       </Link>
-      <div className="flex items-center gap-6">
-        <button className="bg-dark-white hover:text-white rounded-full p-5 relative group transition-[color]">
+      <div className="flex items-center gap-6 md:relative">
+        <button className={`hover:text-white rounded-full p-5 relative group transition-colors ${navOpen ? 'bg-white' : 'bg-dark-white'}`}>
           <div className="absolute inset-0 bg-blue rounded-full scale-0 transition-transform group-hover:scale-100"></div>
           <div className="w-4 h-4 z-10 relative">
             <svg>
@@ -41,16 +41,146 @@ export const Header = ({ alt }) => {
             </svg>
           </div>
         </button>
-        <button className="bg-black text-white rounded-full py-4 px-10 font-semibold uppercase">Book Now</button>
+        <button className="bg-black text-white rounded-full py-4 px-10 font-semibold uppercase max-md:hidden">Book Now</button>
 
-        <button className="bg-dark-white hover:text-white rounded-full p-4 group close [&.close_.line]:rotate-45 [&.close_.line2]:-rotate-45 [&.close_.lines]:translate-x-[1.5px] relative">
+        <button
+          onClick={() => setNavOpen(!navOpen)}
+          className={`hover:text-white rounded-full p-4 group [&.close_.line]:rotate-45 [&.close_.line2]:-rotate-45 [&.close_.lines]:translate-x-[1.5px] relative transition-colors ${
+            navOpen ? 'close bg-white' : 'bg-dark-white'
+          }`}
+        >
           <div className="absolute inset-0 bg-blue rounded-full scale-0 transition-transform group-hover:scale-100"></div>
-          <div className="w-5 h-5 flex flex-col gap-1.5 justify-center items-center">
+          <div className="w-5 h-5 flex flex-col gap-1.5 justify-center items-center relative z-10">
             <div className="h-[2px] w-full bg-current rounded-full lines line origin-[22%_center] transition-[transform_background-color]"></div>
             <div className="h-[2px] w-full bg-current rounded-full lines line2 origin-[22%_center] transition-[transform_background-color]"></div>
           </div>
         </button>
+
+        <div className={`absolute top-full md:pt-10 max-md:left-0 max-md:px-5 w-full ${navOpen ? '' : 'pointer-events-none'}`}>
+          <div className={`w-full bg-white rounded-lg py-8 px-4 font-semibold text-xl uppercase transition-[transform_opacity] duration-500 ${navOpen ? '' : '-rotate-2 translate-y-10 opacity-0'}`}>
+            <ul>
+              <li className="w-full">
+                <NavLink
+                  to="/"
+                  className={({ isActive }) =>
+                    isActive ? 'text-blue py-3 px-6 block pointer-events-none' : 'hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group'
+                  }
+                >
+                  Home
+                </NavLink>
+              </li>
+              <li className="w-full">
+                <NavLink
+                  to="/rooms"
+                  className={({ isActive }) =>
+                    isActive ? 'text-blue py-3 px-6 block pointer-events-none' : 'hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group'
+                  }
+                >
+                  Rooms
+                  <div className="w-4 h-4 transition-transform scale-0 group-hover:scale-100 duration-00">
+                    <svg>
+                      <use xlinkHref="/assets/vector/symbols.svg#arrow-right"></use>
+                    </svg>
+                  </div>
+                </NavLink>
+              </li>
+              <li className="w-full">
+                <NavLink
+                  to="/booking"
+                  className={({ isActive }) =>
+                    isActive ? 'text-blue py-3 px-6 block pointer-events-none' : 'hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group'
+                  }
+                >
+                  My Bookings
+                  <div className="w-4 h-4 transition-transform scale-0 group-hover:scale-100 duration-500">
+                    <svg>
+                      <use xlinkHref="/assets/vector/symbols.svg#arrow-right"></use>
+                    </svg>
+                  </div>
+                </NavLink>
+              </li>
+              <li className="w-full">
+                <NavLink
+                  to="/gallery"
+                  className={({ isActive }) =>
+                    isActive ? 'text-blue py-3 px-6 block pointer-events-none' : 'hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group'
+                  }
+                >
+                  Gallery
+                  <div className="w-4 h-4 transition-transform scale-0 group-hover:scale-100 duration-500">
+                    <svg>
+                      <use xlinkHref="/assets/vector/symbols.svg#arrow-right"></use>
+                    </svg>
+                  </div>
+                </NavLink>
+              </li>
+              <li className="w-full">
+                <NavLink
+                  to="/faq"
+                  className={({ isActive }) =>
+                    isActive ? 'text-blue py-3 px-6 block pointer-events-none' : 'hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group'
+                  }
+                >
+                  Faq
+                  <div className="w-4 h-4 transition-transform scale-0 group-hover:scale-100 duration-500">
+                    <svg>
+                      <use xlinkHref="/assets/vector/symbols.svg#arrow-right"></use>
+                    </svg>
+                  </div>
+                </NavLink>
+              </li>
+              <li className="w-full">
+                <NavLink
+                  to="/testimonials"
+                  className={({ isActive }) =>
+                    isActive ? 'text-blue py-3 px-6 block pointer-events-none' : 'hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group'
+                  }
+                >
+                  Testimonials
+                  <div className="w-4 h-4 transition-transform scale-0 group-hover:scale-100 duration-500">
+                    <svg>
+                      <use xlinkHref="/assets/vector/symbols.svg#arrow-right"></use>
+                    </svg>
+                  </div>
+                </NavLink>
+              </li>
+              <li className="w-full">
+                <NavLink
+                  to="/careers"
+                  className={({ isActive }) =>
+                    isActive ? 'text-blue py-3 px-6 block pointer-events-none' : 'hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group'
+                  }
+                >
+                  Careers
+                  <div className="w-4 h-4 transition-transform scale-0 group-hover:scale-100 duration-500">
+                    <svg>
+                      <use xlinkHref="/assets/vector/symbols.svg#arrow-right"></use>
+                    </svg>
+                  </div>
+                </NavLink>
+              </li>
+              <li className="w-full">
+                <button className="hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group uppercase">
+                  Contact Us
+                  <div className="w-4 h-4 transition-transform scale-0 group-hover:scale-100 duration-500">
+                    <svg>
+                      <use xlinkHref="/assets/vector/symbols.svg#arrow-right"></use>
+                    </svg>
+                  </div>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div className={`w-full bg-black text-white text-sm rounded-lg font-semibold mt-4 transition-[transform_opacity] duration-500 ${navOpen ? '' : 'rotate-2 translate-y-10 opacity-0'}`}>
+            <Link to="/login"><button className='w-full py-4 px-4 uppercase'>Login</button></Link>
+          </div>
+        </div>
       </div>
+      <div
+        className={`fixed md:w-1/2 max-md:inset-0 bg-black right-0 inset-y-0 md:[background:linear-gradient(270deg,rgba(11,11,18,.5)_0%,rgba(11,11,18,0)_100%)] [background:linear-gradient(350deg,rgba(11,11,18,.5)_70%,rgba(11,11,18,0)_100%)] z-[-1] transition-opacity pointer-events-none select-none duration-500 ${
+          navOpen ? 'opacity-20' : 'opacity-0'
+        }`}
+      ></div>
     </header>
   );
 };
