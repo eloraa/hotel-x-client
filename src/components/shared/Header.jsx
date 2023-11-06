@@ -2,12 +2,21 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../context/App';
+import { AuthContext } from '../providers/AuthProvider';
 
 export const Header = ({ alt }) => {
   const location = useLocation();
   const [navOpen, setNavOpen] = useState(false);
   const { screen } = useContext(AppContext);
+  const { user, signOutUser } = useContext(AuthContext);
 
+  const handleSignOut = () => {
+    signOutUser()
+      .then(() => {
+        console.log('Signed out successfully.')
+      })
+      .catch(() => console.log('An error occurred. Please try again later'));
+  };
   useEffect(() => {
     setNavOpen(false);
   }, [location]);
@@ -58,8 +67,12 @@ export const Header = ({ alt }) => {
               <button className="bg-black text-white rounded-full py-4 px-10 font-semibold uppercase max-md:hidden">Login</button>
             </Link>
           )
+        ) : user ? (
+          <button onClick={handleSignOut} className="bg-black text-white rounded-full py-4 px-10 font-semibold uppercase max-md:hidden">Logout</button>
         ) : (
-          <button className="bg-black text-white rounded-full py-4 px-10 font-semibold uppercase max-md:hidden">Book Now</button>
+          <Link to="/login">
+            <button className="bg-black text-white rounded-full py-4 px-10 font-semibold uppercase max-md:hidden">Login</button>
+          </Link>
         )}
 
         <button
@@ -209,8 +222,24 @@ export const Header = ({ alt }) => {
               </li>
             </ul>
           </div>
-          <div className={`w-full bg-black text-white text-sm rounded-lg font-semibold mt-4 transition-[transform_opacity] duration-500 ${navOpen ? '' : 'rotate-2 translate-y-10 opacity-0'}`}>
-            {location.pathname === '/login' ? (
+          <div
+            className={`w-full ${user ? 'bg-white' : 'bg-black'} text-white text-sm rounded-lg font-semibold mt-4 transition-[transform_opacity] duration-500 ${
+              navOpen ? '' : 'rotate-2 translate-y-10 opacity-0'
+            }`}
+          >
+            {user ? (
+              <div className="flex py-6 px-10 gap-4 text-black items-center">
+                <figure>
+                  <Link to="/profile" className="w-10 h-10 overflow-hidden rounded-full bg-green block border-blue border-2">
+                    <img className="w-full h-full object-cover" src={user.photoURL ? user.photoURL : '/assets/images/placeholder/profile.png'} alt="" />
+                  </Link>
+                </figure>
+                <Link to="/profile">
+                  {user?.displayName && <h1 className="text-ellipsis whitespace-nowrap leading-3 text-base font-bold">{user.displayName}</h1>}
+                  <h2 className="text-ellipsis whitespace-nowrap leading-3 mt-2 text-xs">{user.email}</h2>
+                </Link>
+              </div>
+            ) : location.pathname === '/login' ? (
               <Link to="/register">
                 <button className="w-full py-4 px-4 uppercase">Register</button>
               </Link>

@@ -8,6 +8,7 @@ import { Error } from './components/shared/Error';
 import { Login } from './components/pages/Login';
 import { Home } from './components/pages/Home';
 import { AppProvider } from './components/context/App';
+import { Register } from './components/pages/register';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
         path: '/login',
         element: <Login></Login>,
       },
+      {
+        path: '/register',
+        element: <Register></Register>
+      }
     ],
   },
 ]);
