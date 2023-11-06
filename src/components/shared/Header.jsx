@@ -13,7 +13,7 @@ export const Header = ({ alt }) => {
   const handleSignOut = () => {
     signOutUser()
       .then(() => {
-        console.log('Signed out successfully.')
+        console.log('Signed out successfully.');
       })
       .catch(() => console.log('An error occurred. Please try again later'));
   };
@@ -23,6 +23,7 @@ export const Header = ({ alt }) => {
 
   return (
     <header className="py-[.85rem] md:px-10 px-5 flex items-center text-sm justify-between sticky top-0 z-[999] transition-[padding,margin-top] duration-100 mt-4">
+      {!(screen === 'fluid') && <div className="absolute inset-0 bg-white/80 backdrop-blur -z-10"></div>}
       <Link to="/">
         <h1 className={`relative z-[9999] group ${screen === 'fluid' ? 'text-white' : 'text-blue'}`}>
           <div className="w-14">
@@ -57,23 +58,27 @@ export const Header = ({ alt }) => {
             </div>
           </button>
         )}
-        {location.pathname === '/login' || location.pathname === 'register' ? (
-          location.pathname === '/login' ? (
-            <Link to="/register">
-              <button className="bg-black text-white rounded-full py-4 px-10 font-semibold uppercase max-md:hidden">Register</button>
-            </Link>
+
+        {!alt &&
+          (location.pathname === '/login' || location.pathname === 'register' ? (
+            location.pathname === '/login' ? (
+              <Link to="/register">
+                <button className="bg-black text-white rounded-full py-4 px-10 font-semibold uppercase max-md:hidden">Register</button>
+              </Link>
+            ) : (
+              <Link to="/login">
+                <button className="bg-black text-white rounded-full py-4 px-10 font-semibold uppercase max-md:hidden">Login</button>
+              </Link>
+            )
+          ) : user ? (
+            <button onClick={handleSignOut} className="bg-black text-white rounded-full py-4 px-10 font-semibold uppercase max-md:hidden">
+              Logout
+            </button>
           ) : (
             <Link to="/login">
               <button className="bg-black text-white rounded-full py-4 px-10 font-semibold uppercase max-md:hidden">Login</button>
             </Link>
-          )
-        ) : user ? (
-          <button onClick={handleSignOut} className="bg-black text-white rounded-full py-4 px-10 font-semibold uppercase max-md:hidden">Logout</button>
-        ) : (
-          <Link to="/login">
-            <button className="bg-black text-white rounded-full py-4 px-10 font-semibold uppercase max-md:hidden">Login</button>
-          </Link>
-        )}
+          ))}
 
         <button
           onClick={() => setNavOpen(!navOpen)}
@@ -88,7 +93,7 @@ export const Header = ({ alt }) => {
           </div>
         </button>
 
-        <div className={`absolute top-full md:pt-10 max-md:left-0 max-md:px-5 ${alt ? 'w-full md:w-[calc(100%+5rem)] md:right-0' : 'w-full'} ${navOpen ? '' : 'pointer-events-none'}`}>
+        <div className={`absolute top-full md:pt-10 max-md:left-0 max-md:px-5 pb-4 ${alt ? 'w-full md:w-[calc(100%+20rem)] md:right-0' : 'w-full'} ${navOpen ? '' : 'pointer-events-none'}`}>
           <div className={`w-full bg-white rounded-lg py-8 px-4 font-semibold text-xl uppercase transition-[transform_opacity] duration-500 ${navOpen ? '' : '-rotate-2 translate-y-10 opacity-0'}`}>
             <ul>
               <li className="w-full">
@@ -230,13 +235,13 @@ export const Header = ({ alt }) => {
             {user ? (
               <div className="flex py-6 px-10 gap-4 text-black items-center">
                 <figure>
-                  <Link to="/profile" className="w-10 h-10 overflow-hidden rounded-full bg-green block border-blue border-2">
+                  <Link to="/profile" className="w-10 h-10 overflow-hidden rounded-full bg-green block">
                     <img className="w-full h-full object-cover" src={user.photoURL ? user.photoURL : '/assets/images/placeholder/profile.png'} alt="" />
                   </Link>
                 </figure>
-                <Link to="/profile">
+                <Link to="/profile" className="grid gap-2">
                   {user?.displayName && <h1 className="text-ellipsis whitespace-nowrap leading-3 text-base font-bold">{user.displayName}</h1>}
-                  <h2 className="text-ellipsis whitespace-nowrap leading-3 mt-2 text-xs">{user.email}</h2>
+                  <h2 className="text-ellipsis whitespace-nowrap leading-3 text-xs">{user.email}</h2>
                 </Link>
               </div>
             ) : location.pathname === '/login' ? (

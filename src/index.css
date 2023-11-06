@@ -7,3 +7,10 @@ img,
 svg {
     @apply h-full w-full;
 }
+
+::-webkit-scrollbar {
+    width: 0;
+}
+::-webkit-scrollbar-thumb {
+    width: 0;
+}
