@@ -7,9 +7,10 @@ export default {
         sans: "'Open Sans', sans-serif",
       },
       colors: {
-        blue: '#0016ec',
+        'blue': '#0016ec',
         'dark-white': '#e4e6ef',
-        green: '#c1ff00',
+        'off-white': '#f0f1fa',
+        'green': '#c1ff00',
       },
       keyframes: {
         glow: {
