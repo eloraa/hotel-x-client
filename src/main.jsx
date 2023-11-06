@@ -8,9 +8,10 @@ import { Error } from './components/shared/Error';
 import { Login } from './components/pages/Login';
 import { Home } from './components/pages/Home';
 import { AppProvider } from './components/context/App';
-import { Register } from './components/pages/register';
 import { Profile } from './components/pages/Profile';
 import { PrivateRoute } from './components/utils/PrivateRoute';
+import { Gallery } from './components/shared/Gallery';
+import { Registration } from './components/pages/Registration';
 
 const router = createBrowserRouter([
   {
@@ -28,7 +29,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/register',
-        element: <Register></Register>,
+        element: <Registration></Registration>,
       },
       {
         path: '/profile',
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+      {
+        path: '/gallery',
+        element: <Gallery></Gallery>
+      }
     ],
   },
 ]);

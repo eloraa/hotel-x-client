@@ -22,7 +22,7 @@ export const Header = ({ alt }) => {
   }, [location]);
 
   return (
-    <header className="py-[.85rem] md:px-10 px-5 flex items-center text-sm justify-between sticky top-0 z-[999] transition-[padding,margin-top] duration-100 mt-4">
+    <header className='py-[.85rem] md:px-10 px-5 flex items-center text-sm justify-between sticky top-0 z-[999] transition-[padding,margin-top] duration-100'>
       {!(screen === 'fluid') && <div className="absolute inset-0 bg-white/80 backdrop-blur -z-10"></div>}
       <Link to="/">
         <h1 className={`relative z-[9999] group ${screen === 'fluid' ? 'text-white' : 'text-blue'}`}>
@@ -88,13 +88,13 @@ export const Header = ({ alt }) => {
         >
           <div className="absolute inset-0 bg-blue rounded-full scale-0 transition-transform group-hover:scale-100"></div>
           <div className="w-5 h-5 flex flex-col gap-1.5 justify-center items-center relative z-10">
-            <div className="h-[2px] w-full bg-current rounded-full lines line origin-[22%_center] transition-[transform_background-color]"></div>
-            <div className="h-[2px] w-full bg-current rounded-full lines line2 origin-[22%_center] transition-[transform_background-color]"></div>
+            <div className="h-[2px] w-full bg-current rounded-full lines line origin-[22%_center] transition-[transform,background-color]"></div>
+            <div className="h-[2px] w-full bg-current rounded-full lines line2 origin-[22%_center] transition-[transform,background-color]"></div>
           </div>
         </button>
 
         <div className={`absolute top-full md:pt-10 max-md:left-0 max-md:px-5 pb-4 ${alt ? 'w-full md:w-[calc(100%+20rem)] md:right-0' : 'w-full'} ${navOpen ? '' : 'pointer-events-none'}`}>
-          <div className={`w-full bg-white rounded-lg py-8 px-4 font-semibold text-xl uppercase transition-[transform_opacity] duration-500 ${navOpen ? '' : '-rotate-2 translate-y-10 opacity-0'}`}>
+          <div className={`w-full bg-white rounded-lg py-8 px-4 font-semibold text-xl uppercase transition-[transform,opacity] duration-500 ${navOpen ? '' : '-rotate-2 translate-y-10 opacity-0'}`}>
             <ul>
               <li className="w-full">
                 <NavLink
@@ -228,7 +228,7 @@ export const Header = ({ alt }) => {
             </ul>
           </div>
           <div
-            className={`w-full ${user ? 'bg-white' : 'bg-black'} text-white text-sm rounded-lg font-semibold mt-4 transition-[transform_opacity] duration-500 ${
+            className={`w-full ${user ? 'bg-white' : 'bg-black'} text-white text-sm rounded-lg font-semibold mt-4 transition-[transform,opacity] duration-500 ${
               navOpen ? '' : 'rotate-2 translate-y-10 opacity-0'
             }`}
           >
