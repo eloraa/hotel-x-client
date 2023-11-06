@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+img,
+svg {
+    @apply h-full w-full;
+}
