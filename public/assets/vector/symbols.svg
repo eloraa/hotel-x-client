@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+    <symbol id="search" viewBox="0 0 15 15">
+        <path
+            d="M10.865 10.2191L13.75 13.125M12.4167 6.45833C12.4167 9.40387 10.0289 11.7917 7.08333 11.7917C4.13781 11.7917 1.75 9.40387 1.75 6.45833C1.75 3.51281 4.13781 1.125 7.08333 1.125C10.0289 1.125 12.4167 3.51281 12.4167 6.45833Z"
+            stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+</svg>

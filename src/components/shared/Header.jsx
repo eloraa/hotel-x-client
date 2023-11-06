@@ -4,12 +4,11 @@ import { useEffect, useState } from 'react';
 
 export const Header = ({ alt }) => {
   const location = useLocation();
-  const [navOpen, setNavOpen] = useState(false)
+  const [navOpen, setNavOpen] = useState(false);
 
   useEffect(() => {
     setNavOpen(false);
   }, [location]);
-
 
   return (
     <header className="py-[.85rem] md:px-10 px-5 flex items-center text-sm justify-between sticky top-0 z-[999] transition-[padding,margin-top] duration-100 mt-4">
@@ -33,7 +32,25 @@ export const Header = ({ alt }) => {
           </div>
         </h1>
       </Link>
-      <div>hi</div>
+      <div className="flex items-center gap-6">
+        <button className="bg-dark-white hover:text-white rounded-full p-5 relative group transition-[color]">
+          <div className="absolute inset-0 bg-blue rounded-full scale-0 transition-transform group-hover:scale-100"></div>
+          <div className="w-4 h-4 z-10 relative">
+            <svg>
+              <use xlinkHref="/assets/vector/symbols.svg#search"></use>
+            </svg>
+          </div>
+        </button>
+        <button className="bg-black text-white rounded-full py-4 px-10 font-semibold uppercase">Book Now</button>
+
+        <button className="bg-dark-white hover:text-white rounded-full p-4 group close [&.close_.line]:rotate-45 [&.close_.line2]:-rotate-45 [&.close_.lines]:translate-x-[1.5px] relative">
+          <div className="absolute inset-0 bg-blue rounded-full scale-0 transition-transform group-hover:scale-100"></div>
+          <div className="w-5 h-5 flex flex-col gap-1.5 justify-center items-center">
+            <div className="h-[2px] w-full bg-current rounded-full lines line origin-[22%_center] transition-[transform_background-color]"></div>
+            <div className="h-[2px] w-full bg-current rounded-full lines line2 origin-[22%_center] transition-[transform_background-color]"></div>
+          </div>
+        </button>
+      </div>
     </header>
   );
 };
