@@ -4,11 +4,13 @@ import './index.css';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { Root } from './components/Root';
 import AuthProvider from './components/providers/AuthProvider';
+import { Error } from './components/shared/Error';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
+    errorElement: <Error></Error>
   },
 ]);
 

@@ -33,14 +33,16 @@ export const Header = ({ alt }) => {
         </h1>
       </Link>
       <div className="flex items-center gap-6 md:relative">
-        <button className={`hover:text-white rounded-full p-5 relative group transition-colors ${navOpen ? 'bg-white' : 'bg-dark-white'}`}>
-          <div className="absolute inset-0 bg-blue rounded-full scale-0 transition-transform group-hover:scale-100"></div>
-          <div className="w-4 h-4 z-10 relative">
-            <svg>
-              <use xlinkHref="/assets/vector/symbols.svg#search"></use>
-            </svg>
-          </div>
-        </button>
+        {!alt && (
+          <button className={`hover:text-white rounded-full p-5 relative group transition-colors max-h-[55px] ${navOpen ? 'bg-white' : 'bg-dark-white'}`}>
+            <div className="absolute inset-0 bg-blue rounded-full scale-0 transition-transform group-hover:scale-100"></div>
+            <div className="w-4 h-4 z-10 relative">
+              <svg>
+                <use xlinkHref="/assets/vector/symbols.svg#search"></use>
+              </svg>
+            </div>
+          </button>
+        )}
         <button className="bg-black text-white rounded-full py-4 px-10 font-semibold uppercase max-md:hidden">Book Now</button>
 
         <button
@@ -56,28 +58,37 @@ export const Header = ({ alt }) => {
           </div>
         </button>
 
-        <div className={`absolute top-full md:pt-10 max-md:left-0 max-md:px-5 w-full ${navOpen ? '' : 'pointer-events-none'}`}>
+        <div className={`absolute top-full md:pt-10 max-md:left-0 max-md:px-5 ${alt ? 'w-full md:w-[calc(100%+5rem)] md:right-0' : 'w-full'} ${navOpen ? '' : 'pointer-events-none'}`}>
           <div className={`w-full bg-white rounded-lg py-8 px-4 font-semibold text-xl uppercase transition-[transform_opacity] duration-500 ${navOpen ? '' : '-rotate-2 translate-y-10 opacity-0'}`}>
             <ul>
               <li className="w-full">
                 <NavLink
                   to="/"
                   className={({ isActive }) =>
-                    isActive ? 'text-blue py-3 px-6 block pointer-events-none' : 'hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group'
+                    isActive
+                      ? 'text-blue py-3 px-6 block pointer-events-none [&>div]:hidden'
+                      : 'hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group'
                   }
                 >
                   Home
+                  <div className="w-4 h-4 transition-transform scale-0 group-hover:scale-100 duration-500">
+                    <svg>
+                      <use xlinkHref="/assets/vector/symbols.svg#arrow-right"></use>
+                    </svg>
+                  </div>
                 </NavLink>
               </li>
               <li className="w-full">
                 <NavLink
                   to="/rooms"
                   className={({ isActive }) =>
-                    isActive ? 'text-blue py-3 px-6 block pointer-events-none' : 'hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group'
+                    isActive
+                      ? 'text-blue py-3 px-6 block pointer-events-none [&>div]:hidden'
+                      : 'hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group'
                   }
                 >
                   Rooms
-                  <div className="w-4 h-4 transition-transform scale-0 group-hover:scale-100 duration-00">
+                  <div className="w-4 h-4 transition-transform scale-0 group-hover:scale-100 duration-500">
                     <svg>
                       <use xlinkHref="/assets/vector/symbols.svg#arrow-right"></use>
                     </svg>
@@ -88,7 +99,9 @@ export const Header = ({ alt }) => {
                 <NavLink
                   to="/booking"
                   className={({ isActive }) =>
-                    isActive ? 'text-blue py-3 px-6 block pointer-events-none' : 'hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group'
+                    isActive
+                      ? 'text-blue py-3 px-6 block pointer-events-none [&>div]:hidden'
+                      : 'hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group'
                   }
                 >
                   My Bookings
@@ -103,7 +116,9 @@ export const Header = ({ alt }) => {
                 <NavLink
                   to="/gallery"
                   className={({ isActive }) =>
-                    isActive ? 'text-blue py-3 px-6 block pointer-events-none' : 'hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group'
+                    isActive
+                      ? 'text-blue py-3 px-6 block pointer-events-none [&>div]:hidden'
+                      : 'hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group'
                   }
                 >
                   Gallery
@@ -118,7 +133,9 @@ export const Header = ({ alt }) => {
                 <NavLink
                   to="/faq"
                   className={({ isActive }) =>
-                    isActive ? 'text-blue py-3 px-6 block pointer-events-none' : 'hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group'
+                    isActive
+                      ? 'text-blue py-3 px-6 block pointer-events-none [&>div]:hidden'
+                      : 'hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group'
                   }
                 >
                   Faq
@@ -133,7 +150,9 @@ export const Header = ({ alt }) => {
                 <NavLink
                   to="/testimonials"
                   className={({ isActive }) =>
-                    isActive ? 'text-blue py-3 px-6 block pointer-events-none' : 'hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group'
+                    isActive
+                      ? 'text-blue py-3 px-6 block pointer-events-none [&>div]:hidden'
+                      : 'hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group'
                   }
                 >
                   Testimonials
@@ -148,7 +167,9 @@ export const Header = ({ alt }) => {
                 <NavLink
                   to="/careers"
                   className={({ isActive }) =>
-                    isActive ? 'text-blue py-3 px-6 block pointer-events-none' : 'hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group'
+                    isActive
+                      ? 'text-blue py-3 px-6 block pointer-events-none [&>div]:hidden'
+                      : 'hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group'
                   }
                 >
                   Careers
@@ -172,7 +193,9 @@ export const Header = ({ alt }) => {
             </ul>
           </div>
           <div className={`w-full bg-black text-white text-sm rounded-lg font-semibold mt-4 transition-[transform_opacity] duration-500 ${navOpen ? '' : 'rotate-2 translate-y-10 opacity-0'}`}>
-            <Link to="/login"><button className='w-full py-4 px-4 uppercase'>Login</button></Link>
+            <Link to="/login">
+              <button className="w-full py-4 px-4 uppercase">Login</button>
+            </Link>
           </div>
         </div>
       </div>
