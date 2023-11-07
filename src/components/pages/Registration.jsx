@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
 import { AuthContext } from '../providers/AuthProvider';
 import { Effect } from '../shared/Effect';
+import { Toast } from '../utils/Toast';
 
 export const Registration = () => {
   const { createUser, user, googleSignin } = useContext(AuthContext);
@@ -18,13 +19,13 @@ export const Registration = () => {
   const handleGoogleLogin = () => {
     googleSignin()
       .then(() => {
-        console.log('Signed in successfully.');
+        Toast('Signed in successfully.');
         navigate(location?.state ? location.state : '/');
       })
       .catch(err => {
-        if (err.code === 'auth/user-not-found') console.log('The user not found.');
-        if (err.code === 'auth/invalid-login-credentials') console.log('Your password or email might be wrong.');
-        else console.log('An error occurred. Please try again later.');
+        if (err.code === 'auth/user-not-found') Toast('The user not found.');
+        if (err.code === 'auth/invalid-login-credentials') Toast('Your password or email might be wrong.');
+        else Toast('An error occurred. Please try again later.');
       });
   };
 
@@ -34,16 +35,17 @@ export const Registration = () => {
 
     if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(e.target.email.value)) email = e.target.email.value;
     if (/^(?=.*[A-Z]).{8,}$/.test(e.target.password.value)) password = e.target.password.value;
+    else Toast(<h4 className="text-sm">The password <strong>should be at least 6 characters</strong> and must contain <strong>a capital letter</strong> and <strong>a special character</strong>.</h4>, 5000)
 
     if (email && password) {
       createUser(email, password)
         .then(() => {
-          console.log('User Created Successfully');
+          Toast('User Created Successfully');
           navigate(location?.state ? location.state : '/');
         })
         .catch(err => {
-          if (err.code === 'auth/email-already-in-use') console.log('This email address is already in use.');
-          else console.log('An error occurred. Please try again later.');
+          if (err.code === 'auth/email-already-in-use') Toast('This email address is already in use.');
+          else Toast('An error occurred. Please try again later.');
         });
     }
   };

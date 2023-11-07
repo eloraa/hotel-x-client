@@ -46,12 +46,34 @@ export default {
             opacity: '1',
           },
         },
+        'in': {
+          from: {
+            transform: 'translateY(100%)',
+            opacity: 0,
+          },
+          to: {
+            transform: 'translateY(0%)',
+            opacity: 1,
+          },
+        },
+        'out': {
+          from: {
+            transform: 'translateY(0%)',
+            opacity: 1,
+          },
+          to: {
+            transform: 'translateY(100%)',
+            opacity: 0,
+          },
+        },
       },
       animation: {
         'glow': 'glow 4s ease-in-out infinite',
         '3d-rotate': '3d-rotate 10s linear infinite',
         'dissolve-in': 'dissolve-in 500ms ease',
         'dissolve': 'dissolve 500ms ease forwards',
+        'enter': 'in 200ms ease forwards',
+        'leave': 'out 200ms ease forwards',
       },
     },
   },

@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../providers/AuthProvider';
 import { selectFile } from '../utils/utils';
 import { saveToStorage } from '../providers/StorageProvider';
+import { Toast } from '../utils/Toast';
+import toast from 'react-hot-toast';
 
 export const Profile = () => {
   const formRef = useRef(null);
@@ -31,6 +33,7 @@ export const Profile = () => {
 
   let isVerifying;
   const handleFormSubmit = e => {
+    let toasts;
     e.preventDefault();
 
     if (isUpdating) return;
@@ -39,22 +42,22 @@ export const Profile = () => {
     photoURL = e.target.photoURL.value || null;
 
     if (name && name.length > 30) {
-      console.log('Name cannot exceeds 30 characters');
+      Toast('Name cannot exceeds 30 characters');
       return;
     }
 
     if (photoURL && !/((https?|www):\/\/)[-a-zA-Z0-9+&@#/%=~_|$?!:,.]*[-a-zA-Z0-9+&@#/%=~_|$]/g.test(photoURL)) {
-      console.log('Enter a valid URL');
+      Toast('Enter a valid URL');
       return;
     }
 
     // it gives cors error;. will work on later
     const file = e.target?.photo?.files[0];
-
     if (file) {
-      console.log('Updating profile...');
+      toasts = Toast('Updating profile...');
       if (!file.type.startsWith('image/')) {
-        console.log('Upload a valid image.');
+        toast.dismiss(toasts)
+        Toast('Upload a valid image.');
         return;
       }
       setIsUpdating(true);
@@ -63,52 +66,60 @@ export const Profile = () => {
         .then(url => {
           updateUser(name, url)
             .then(() => {
-              console.log('User Updated Successfully');
+              toast.dismiss(toasts)
+              Toast('User Updated Successfully');
               navigate('/');
             })
             .catch(() => {
               setIsUpdating(false);
-              console.log('Something went wrong');
+              toast.dismiss(toasts)
+              Toast('Something went wrong');
             });
         })
         .catch(() => {
           setIsUpdating(false);
-          console.log('something went wrong');
+          toast.dismiss(toasts)
+          Toast('something went wrong');
         });
 
       return;
     } else if (selectedImage) {
-      console.log('Updating profile...');
+      toasts = Toast('Updating profile...');
       setIsUpdating(true);
       if (name === null) name = '';
       updateUser(name, selectedImage)
         .then(() => {
-          console.log('User Updated Successfully');
+          toast.dismiss(toasts)
+          Toast('User Updated Successfully');
           navigate('/');
         })
         .catch(() => {
           setIsUpdating(false);
-          console.log('Something went wrong');
+          toast.dismiss(toasts)
+          Toast('Something went wrong');
         });
       return;
     } else {
       if (name !== user.displayName || photoURL !== user.photoURL) {
-        console.log('Updating profile...');
+        toasts = Toast('Updating profile...');
         setIsUpdating(true);
         if (name === null) name = '';
         if (photoURL === null) photoURL = '';
         updateUser(name, photoURL)
           .then(() => {
-            console.log('User Updated Successfully');
+            toast.dismiss(toasts)
+            Toast('User Updated Successfully');
             navigate('/');
           })
           .catch(() => {
             setIsUpdating(false);
-            console.log('Something went wrong');
+            toast.dismiss(toasts)
+            Toast('Something went wrong');
           });
         return;
       }
-      console.log('Nothing to update.');
+      toast.dismiss(toasts)
+      toasts = Toast('Nothing to update.');
     }
   };
 
@@ -138,15 +149,15 @@ export const Profile = () => {
             <button
               onClick={() => {
                 if (isUpdating) return;
-                if (isVerifying) console.log('Check your email to verify your Account');
+                if (isVerifying) Toast('Check your email to verify your Account');
                 verifyEmail()
                   .then(() => {
                     isVerifying = true;
-                    console.log('Check your email to verify your Account');
+                    Toast('Check your email to verify your Account');
                   })
                   .catch(err => {
                     isVerifying = false;
-                    err.code === 'auth/too-many-requests' ? console.log('Try verifying after a little while.') : console.log('Something went wrong.');
+                    err.code === 'auth/too-many-requests' ? Toast('Try verifying after a little while.') : Toast('Something went wrong.');
                   });
               }}
               className="underline active:scale-[.98] transition-transform text-sm"

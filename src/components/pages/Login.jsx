@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useRef } from 'react';
 import { AuthContext } from '../providers/AuthProvider';
 import { Effect } from '../shared/Effect';
+import { Toast } from '../utils/Toast';
 
 export const Login = () => {
   const { signIn, user, googleSignin, resetPassword } = useContext(AuthContext);
@@ -19,22 +20,22 @@ export const Login = () => {
   const handleGoogleLogin = () => {
     googleSignin()
       .then(() => {
-        console.log('Signed in successfully.');
+        Toast('Signed in successfully.');
         navigate(location?.state ? location.state : '/');
       })
       .catch(err => {
-        if (err.code === 'auth/user-not-found') console.log('The user not found.');
-        if (err.code === 'auth/invalid-login-credentials') console.log('Your password or email might be wrong.');
-        else console.log('An error occurred. Please try again later.');
+        if (err.code === 'auth/user-not-found') Toast('The user not found.');
+        if (err.code === 'auth/invalid-login-credentials') Toast('Your password or email might be wrong.');
+        else Toast('An error occurred. Please try again later.');
       });
   };
 
   const handleResetPassword = () => {
-    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formRef.current.email.value)) console.log('Enter an Email to the field to reset the password.');
+    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formRef.current.email.value)) Toast('Enter an Email to the field to reset the password.');
     else
       resetPassword(formRef.current.email.value)
-        .then(() => console.log('Check your email to reset your Password.'))
-        .catch(err => (err.code === 'auth/too-many-requests' ? console.log('Try verifying after a little while.') : console.log('Something went wrong.')));
+        .then(() => Toast('Check your email to reset your Password.'))
+        .catch(err => (err.code === 'auth/too-many-requests' ? Toast('Try verifying after a little while.') : Toast('Something went wrong.')));
   };
 
   const handleFormSubmit = e => {
@@ -47,13 +48,13 @@ export const Login = () => {
     if (email) {
       signIn(email, password)
         .then(() => {
-          console.log('Signed in successfully.');
+          Toast('Signed in successfully.');
           navigate(location?.state ? location.state : '/');
         })
         .catch(err => {
-          if (err.code === 'auth/user-not-found') console.log('The user not found.');
-          if (err.code === 'auth/invalid-login-credentials') console.log('Your password or email might be wrong.');
-          else console.log('An error occurred. Please try again later.');
+          if (err.code === 'auth/user-not-found') Toast('The user not found.');
+          if (err.code === 'auth/invalid-login-credentials') Toast('Your password or email might be wrong.');
+          else Toast('An error occurred. Please try again later.');
         });
     }
   };

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { scroll } from '../utils/utils';
+import { Toast } from '../utils/Toast';
 
 export const Footer = () => {
   const [isSubbed, setIsSubbed] = useState(false);
@@ -18,7 +19,7 @@ export const Footer = () => {
 
     let email;
     if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(e.target.email.value)) email = e.target.email.value;
-    else console.log('Enter a valid Email.');
+    else Toast('Enter a valid Email.');
 
     if (email) {
       fetch(`${import.meta.env.VITE_BACKENDSERVER}/newsletter`, {
@@ -31,7 +32,7 @@ export const Footer = () => {
         .then(res => res.json())
         .then(result => {
           if (result.success) {
-            console.log('Thanks for subscribing to our Newsletter.');
+            Toast('Thanks for subscribing to our Newsletter.');
             setIsSubbed(true);
           }
           if (result.errors) {
@@ -40,11 +41,11 @@ export const Footer = () => {
         })
         .catch(err => {
           if (err[0]?.messages[0] === '"email" already exists') {
-            console.log('You have already subscribed to our newsletter.');
+            Toast('You have already subscribed to our newsletter.');
             setIsSubbed(true);
             return;
           }
-          console.log('Something went wrong.');
+          Toast('Something went wrong.');
         });
     }
   };

@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../context/App';
 import { AuthContext } from '../providers/AuthProvider';
 import { scroll } from '../utils/utils';
+import { Toast } from '../utils/Toast';
 
 export const Header = ({ alt }) => {
   const location = useLocation();
@@ -15,9 +16,9 @@ export const Header = ({ alt }) => {
   const handleSignOut = () => {
     signOutUser()
       .then(() => {
-        console.log('Signed out successfully.');
+        Toast('Signed out successfully.');
       })
-      .catch(() => console.log('An error occurred. Please try again later'));
+      .catch(() => Toast('An error occurred. Please try again later'));
   };
   useEffect(() => {
     if(location.state === '/contact') {
