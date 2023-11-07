@@ -93,8 +93,8 @@ export const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-between font-medium mt-32 flex-wrap max-md:text-center md:mt-auto">
-        <p>©2023 Hotel Inc. All Right Reserved.</p>
+      <div className="flex items-center justify-between font-medium mt-32 flex-wrap md:mt-auto">
+        <p className='max-md:text-center max-md:w-full'>©2023 Hotel Inc. All Right Reserved.</p>
         <ul className="flex items-center gap-5 max-md:w-full max-md:mt-8 max-md:text-xs justify-between">
           <li>
             <Link to="/terms">Terms & Condition</Link>

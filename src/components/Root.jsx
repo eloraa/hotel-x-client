@@ -2,13 +2,13 @@ import { Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
 import { Header } from './shared/Header';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { AppContext } from './context/App';
+import { Toaster } from 'react-hot-toast';
 
 export const Root = () => {
   const { setScreen } = useContext(AppContext);
   const locations = useLocation();
   const [isLoaded, setLoaded] = useState(false);
   const main = useRef();
-
 
   useEffect(() => {
     let interval;
@@ -39,7 +39,15 @@ export const Root = () => {
               void main.current.offsetWidth;
               main.current?.classList.add('animate-dissolve');
             }
-            if (main.current && target.pathname && target.pathname !== '/login' && target.pathname !== '/register' && locations.pathname !== '/login' && locations.pathname !== '/register' && locations.pathname !== target.pathname) {
+            if (
+              main.current &&
+              target.pathname &&
+              target.pathname !== '/login' &&
+              target.pathname !== '/register' &&
+              locations.pathname !== '/login' &&
+              locations.pathname !== '/register' &&
+              locations.pathname !== target.pathname
+            ) {
               main.current?.classList.add('animate-dissolve');
             }
             return;
@@ -62,6 +70,7 @@ export const Root = () => {
       </main>
 
       <ScrollRestoration />
+      <Toaster position="bottom-center" reverseOrder={false} />
     </>
   );
 };

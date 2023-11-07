@@ -5,6 +5,7 @@ import { Banner } from '../shared/Banner';
 import { Featured } from '../shared/Featured';
 import { FluidHero } from '../shared/FluidHero';
 import { Footer } from '../shared/Footer';
+import { ConfirmToast } from '../utils/ConfirmToast';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -63,6 +64,13 @@ export const Home = () => {
       });
     }
   }, []);
+
+  ConfirmToast(<div>Are you want to <b>womb</b>?</div>, '#1851f1').then(() => {
+    console.log('huehuehue');
+  })
+  .catch(() => {
+    console.log('dude');
+  })
 
   return (
     <div ref={main}>
