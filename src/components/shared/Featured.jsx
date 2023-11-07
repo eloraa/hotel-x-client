@@ -4,7 +4,7 @@ import { Ratings } from '../utils/Ratings';
 
 export const Featured = () => {
 
-  const [activeSlide, setActiveSlide] = useState(0)
+  const [activeSlide, setActiveSlide] = useState(1)
 
   const changeSlide = i => {
         setActiveSlide(i);
@@ -37,7 +37,7 @@ export const Featured = () => {
         <h1 className="uppercase font-bold text-4xl">FEATURED ROOMs</h1>
       </div>
       <div className="relative">
-        <div className={`mt-12 grid grid-cols-2 gap-8 absolute bg-red pb-16 transition-opacity ${activeSlide === 1 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+        <div className={`mt-12 grid md:grid-cols-2 gap-8 absolute bg-red pb-16 transition-opacity ${activeSlide === 1 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
           <div>
             <div className="flex items-center justify-between font-bold">
               <h1 className="text-4xl uppercase">Grand Suite</h1>
@@ -55,8 +55,8 @@ export const Featured = () => {
               <Button type="open">Book Now</Button>
             </div>
           </div>
-          <figure>
-            <img src="#" alt="" />
+          <figure className="max-md:min-h-[320px]">
+            <img className="object-cover" src="#" alt="" />
           </figure>
         </div>
         <div className={`mt-12 grid grid-cols-2 gap-8 absolute bg-green pb-16 transition-opacity ${activeSlide === 2 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
@@ -77,8 +77,8 @@ export const Featured = () => {
               <Button type="open">Book Now</Button>
             </div>
           </div>
-          <figure>
-            <img src="#" alt="" />
+          <figure className="max-md:min-h-[320px]">
+            <img className="object-cover" src="#" alt="" />
           </figure>
         </div>
         <div className={`mt-12 grid grid-cols-2 gap-8 absolute bg-blue pb-16 transition-opacity ${activeSlide === 3 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
@@ -99,8 +99,8 @@ export const Featured = () => {
               <Button type="open">Book Now</Button>
             </div>
           </div>
-          <figure>
-            <img src="#" alt="" />
+          <figure className="max-md:min-h-[320px]">
+            <img className="object-cover" src="#" alt="" />
           </figure>
         </div>
       </div>

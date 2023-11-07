@@ -16,7 +16,7 @@ export const Banner = () => {
   return (
     <div className="animate-dissolve-in main md:px-10 px-5 pb-[30rem]">
       <div>
-        <div className="fixed inset-x-0 md:px-10 px-5 top-20 pt-10 text-[2rem] md:text-[3.8rem] heading -z-10">
+        <div className="fixed inset-x-0 md:px-10 px-5 top-20 pt-10 text-[2rem] md:text-[3.8rem] xl:text-[5.5vw] heading -z-10">
           <h1 className="text-justify [text-align-last:justify]">Unleash Your Adventure Discover Explore Enjoy!</h1>
         </div>
         <div className="h-[140vh]"></div>
@@ -28,7 +28,7 @@ export const Banner = () => {
               </svg>
             </div>
           </div>
-          <video onClick={playVideo} className="rounded-lg object-cover hover:scale-[1.1] transition-transform duration-500" src="/assets/videos/banner.mp4"></video>
+          <video poster="/assets/images/banner.png" onClick={playVideo} className="rounded-lg object-cover hover:scale-[1.1] transition-transform duration-500" src="/assets/videos/banner.mp4"></video>
         </figure>
       </div>
     </div>
