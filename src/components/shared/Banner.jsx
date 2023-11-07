@@ -14,7 +14,8 @@ export const Banner = () => {
     e.target.addEventListener('ended', () => setPlaying(false));
   };
   return (
-    <div className="animate-dissolve-in main md:px-10 px-5 pb-[30rem]">
+    <div className="animate-dissolve-in main md:px-10 px-5 pb-[30rem] relative">
+        <div className="fixed -z-10 inset-0 bg-white"></div>
       <div>
         <div className="fixed inset-x-0 md:px-10 px-5 top-20 pt-10 text-[2rem] md:text-[3.8rem] xl:text-[5.5vw] heading -z-10">
           <h1 className="text-justify [text-align-last:justify]">Unleash Your Adventure Discover Explore Enjoy!</h1>

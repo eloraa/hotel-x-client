@@ -3,6 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useLayoutEffect, useRef } from 'react';
 import { Banner } from '../shared/Banner';
 import { Featured } from '../shared/Featured';
+import { FluidHero } from '../shared/FluidHero';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -34,6 +35,20 @@ export const Home = () => {
         'l'
       );
 
+      const tl2 = gsap.timeline({
+        scrollTrigger: {
+          trigger: '.fluid',
+          start: 'top top',
+          end: 'bottom center',
+          scrub: 1,
+        },
+      });
+
+      tl2.to('.fluidFig', {
+        scale: 1.2,
+        filter: 'grayscale(.5)',
+      });
+
       let sections = gsap.utils.toArray('sections');
 
       sections.forEach((section, i) => {
@@ -48,12 +63,12 @@ export const Home = () => {
     }
   }, []);
 
-
-
   return (
     <div ref={main}>
       <Banner></Banner>
       <Featured></Featured>
+      <FluidHero></FluidHero>
+      <section className="bg-green h-screen sticky top-0 z-10 mt-[100vh]"></section>
     </div>
   );
 };

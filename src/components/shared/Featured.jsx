@@ -12,23 +12,23 @@ export const Featured = () => {
 
 
   return (
-    <section className="py-16 h-screen md:px-10 px-5 sticky top-0 bg-white pt-36">
-      <div className="flex justify-between max-md:flex-col-reverse">
+    <section className="py-16 md:px-10 px-5 md:sticky top-0 bg-white pt-24 relative z-10">
+      <div className="flex justify-between max-md:flex-col-reverse gap-8">
         <div className="flex gap-5 flex-wrap">
           <button onMouseOver={() => changeSlide(1)}>
-            <figure className="md:w-32 md:h-56 h-32 w-16">
+            <figure className="lg:w-32 lg:h-56 h-32 w-16">
               <img src="#" alt="" />
             </figure>
             <h4 className="font-bold text-xs mt-4 text-left">102</h4>
           </button>
           <button onMouseOver={() => changeSlide(2)}>
-            <figure className="md:w-32 md:h-56 h-32 w-16">
+            <figure className="lg:w-32 lg:h-56 h-32 w-16">
               <img src="#" alt="" />
             </figure>
             <h4 className="font-bold text-xs mt-4 text-left">102</h4>
           </button>
           <button onMouseOver={() => changeSlide(3)}>
-            <figure className="md:w-32 md:h-56 h-32 w-16">
+            <figure className="lg:w-32 lg:h-56 h-32 w-16">
               <img src="#" alt="" />
             </figure>
             <h4 className="font-bold text-xs mt-4 text-left">102</h4>
@@ -37,7 +37,7 @@ export const Featured = () => {
         <h1 className="uppercase font-bold text-4xl">FEATURED ROOMs</h1>
       </div>
       <div className="relative">
-        <div className={`mt-12 grid md:grid-cols-2 gap-8 absolute bg-red pb-16 transition-opacity ${activeSlide === 1 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+        <div className={`mt-6 grid md:grid-cols-2 gap-8 bg-white pb-16 transition-opacity ${activeSlide === 1 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
           <div>
             <div className="flex items-center justify-between font-bold">
               <h1 className="text-4xl uppercase">Grand Suite</h1>
@@ -59,7 +59,7 @@ export const Featured = () => {
             <img className="object-cover" src="#" alt="" />
           </figure>
         </div>
-        <div className={`mt-12 grid grid-cols-2 gap-8 absolute bg-green pb-16 transition-opacity ${activeSlide === 2 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+        <div className={`mt-6 grid md:grid-cols-2 gap-8 absolute top-0 left-0 bg-white pb-16 transition-opacity ${activeSlide === 2 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
           <div>
             <div className="flex items-center justify-between font-bold">
               <h1 className="text-4xl uppercase">Apatoto DIyechi</h1>
@@ -81,7 +81,7 @@ export const Featured = () => {
             <img className="object-cover" src="#" alt="" />
           </figure>
         </div>
-        <div className={`mt-12 grid grid-cols-2 gap-8 absolute bg-blue pb-16 transition-opacity ${activeSlide === 3 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+        <div className={`mt-6 grid md:grid-cols-2 gap-8 absolute top-0 left-0 bg-white pb-16 transition-opacity ${activeSlide === 3 ? 'opacity-100' : 'opacity-0  pointer-events-none'}`}>
           <div>
             <div className="flex items-center justify-between font-bold">
               <h1 className="text-4xl uppercase">Holy Town</h1>
