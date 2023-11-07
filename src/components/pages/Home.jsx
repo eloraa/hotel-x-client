@@ -6,6 +6,7 @@ import { Featured } from '../shared/Featured';
 import { FluidHero } from '../shared/FluidHero';
 import { Footer } from '../shared/Footer';
 import { ConfirmToast } from '../utils/ConfirmToast';
+import { Toast } from '../utils/Toast';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -71,6 +72,8 @@ export const Home = () => {
   .catch(() => {
     console.log('dude');
   })
+
+  Toast('lalalala okokokokokokok')
 
   return (
     <div ref={main}>

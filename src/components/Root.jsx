@@ -2,13 +2,24 @@ import { Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
 import { Header } from './shared/Header';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { AppContext } from './context/App';
-import { Toaster } from 'react-hot-toast';
+import { Toaster, useToaster } from 'react-hot-toast';
 
 export const Root = () => {
   const { setScreen } = useContext(AppContext);
   const locations = useLocation();
   const [isLoaded, setLoaded] = useState(false);
   const main = useRef();
+
+  const { toasts } = useToaster();
+
+  const [toasters, setToasters] = useState(false);
+
+  useEffect(() => {
+    if (toasts.length && toasts.filter(toast => toast.visible).length) {
+      setToasters(true);
+    }
+    else setToasters(false)
+  }, [toasts]);
 
   useEffect(() => {
     let interval;
@@ -71,6 +82,12 @@ export const Root = () => {
 
       <ScrollRestoration />
       <Toaster position="bottom-center" reverseOrder={false} />
+
+      <div
+        className={`fixed inset-x-0 h-1/2 bottom-0 [background:linear-gradient(90deg,rgba(255,255,255,0.00)_-0.89%,rgba(255,255,255,0.00)_33.17%,rgba(255,255,255,0.00)_74.15%,rgba(255,255,255,0.00)_101.29%),linear-gradient(0deg,rgba(11,11,18,0.10)_0%,rgba(11,11,18,0.00)_100%)] z-20 pointer-events-none transition-opacity ${
+          toasters ? 'opacity-100' : 'opacity-0'
+        }`}
+      ></div>
     </>
   );
 };
