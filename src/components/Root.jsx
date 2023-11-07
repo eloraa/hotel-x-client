@@ -9,6 +9,7 @@ export const Root = () => {
   const [isLoaded, setLoaded] = useState(false);
   const main = useRef();
 
+
   useEffect(() => {
     let interval;
     interval = setInterval(() => {

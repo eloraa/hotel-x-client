@@ -1,14 +1,16 @@
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../context/App';
 import { AuthContext } from '../providers/AuthProvider';
+import { scroll } from '../utils/utils';
 
 export const Header = ({ alt }) => {
   const location = useLocation();
   const [navOpen, setNavOpen] = useState(false);
   const { screen } = useContext(AppContext);
   const { user, signOutUser } = useContext(AuthContext);
+  const navigate = useNavigate()
 
   const handleSignOut = () => {
     signOutUser()
@@ -18,8 +20,21 @@ export const Header = ({ alt }) => {
       .catch(() => console.log('An error occurred. Please try again later'));
   };
   useEffect(() => {
+    if(location.state === '/contact') {
+      scroll(document.querySelector('.fluid'))
+      location.state = '/'
+    }
     setNavOpen(false);
   }, [location]);
+
+  const showContact = () => {
+    setNavOpen(false)
+    if(location.pathname !== '/') {
+      navigate('/', { state: '/contact' })
+      return
+    }
+    scroll(document.querySelector('.fluid'))
+  }
 
   return (
     <header className="py-[.85rem] md:px-10 px-5 flex items-center text-sm justify-between sticky top-0 z-[999] transition-[padding,margin-top] duration-100">
@@ -216,7 +231,10 @@ export const Header = ({ alt }) => {
                 </NavLink>
               </li>
               <li className="w-full">
-                <button className="hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group uppercase">
+                <button
+                  onClick={showContact}
+                  className="hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group uppercase"
+                >
                   Contact Us
                   <div className="w-4 h-4 transition-transform scale-0 group-hover:scale-100 duration-500">
                     <svg>
