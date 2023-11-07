@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { scroll } from '../utils/utils';
 import { Toast } from '../utils/Toast';
+import axios from 'axios';
 
 export const Footer = () => {
   const [isSubbed, setIsSubbed] = useState(false);
@@ -22,25 +23,19 @@ export const Footer = () => {
     else Toast('Enter a valid Email.');
 
     if (email) {
-      fetch(`${import.meta.env.VITE_BACKENDSERVER}/newsletter`, {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      })
-        .then(res => res.json())
+      axios
+        .post(`${import.meta.env.VITE_BACKENDSERVER}/newsletter`, { email })
         .then(result => {
-          if (result.success) {
+          if (result.data.success) {
             Toast('Thanks for subscribing to our Newsletter.');
             setIsSubbed(true);
           }
-          if (result.errors) {
-            throw result.errors;
+          if (result.data.errors) {
+            throw result.data.errors;
           }
         })
         .catch(err => {
-          if (err[0]?.messages[0] === '"email" already exists') {
+          if (err.response.data.errors[0]?.messages[0] === '"email" already exists') {
             Toast('You have already subscribed to our newsletter.');
             setIsSubbed(true);
             return;
@@ -95,7 +90,7 @@ export const Footer = () => {
         </div>
       </div>
       <div className="flex items-center justify-between font-medium mt-32 flex-wrap md:mt-auto">
-        <p className='max-md:text-center max-md:w-full'>©2023 Hotel Inc. All Right Reserved.</p>
+        <p className="max-md:text-center max-md:w-full">©2023 Hotel Inc. All Right Reserved.</p>
         <ul className="flex items-center gap-5 max-md:w-full max-md:mt-8 max-md:text-xs justify-between">
           <li>
             <Link to="/terms">Terms & Condition</Link>

@@ -10,8 +10,11 @@ video {
 }
 
 ::-webkit-scrollbar {
-    width: 0;
+    width: 2px;
+    background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-    width: 0;
+    width: 2px;
+    background: #000;
+    border-radius: 9999999px;
 }
