@@ -11,6 +11,7 @@ export default {
         'dark-white': '#e4e6ef',
         'off-white': '#f0f1fa',
         green: '#c1ff00',
+        red: '#ff4c41'
       },
       keyframes: {
         glow: {
