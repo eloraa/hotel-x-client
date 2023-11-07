@@ -114,7 +114,7 @@ export const Profile = () => {
 
   return (
     <>
-      <main className={`py-6 md:px-10 px-5 ${isUpdating ? 'opacity-10 cursor-not-allowed [&_*]:cursor-not-allowed select-none' : ''}`}>
+      <main className={`py-6 md:px-10 px-5 animate-dissolve-in ${isUpdating ? 'opacity-10 cursor-not-allowed [&_*]:cursor-not-allowed select-none' : ''}`}>
         <div className="flex justify-between items-center mb-16">
           <h1 className="font-semibold text-xl">{editState && 'Update '}Your Profile</h1>
           <button

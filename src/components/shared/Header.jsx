@@ -22,7 +22,7 @@ export const Header = ({ alt }) => {
   }, [location]);
 
   return (
-    <header className='py-[.85rem] md:px-10 px-5 flex items-center text-sm justify-between sticky top-0 z-[999] transition-[padding,margin-top] duration-100'>
+    <header className="py-[.85rem] md:px-10 px-5 flex items-center text-sm justify-between sticky top-0 z-[999] transition-[padding,margin-top] duration-100">
       {!(screen === 'fluid') && <div className="absolute inset-0 bg-white/80 backdrop-blur -z-10"></div>}
       <Link to="/">
         <h1 className={`relative z-[9999] group ${screen === 'fluid' ? 'text-white' : 'text-blue'}`}>
@@ -83,7 +83,7 @@ export const Header = ({ alt }) => {
         <button
           onClick={() => setNavOpen(!navOpen)}
           className={`hover:text-white rounded-full p-4 group [&.close_.line]:rotate-45 [&.close_.line2]:-rotate-45 [&.close_.lines]:translate-x-[1.5px] relative transition-colors ${
-            navOpen && !screen ? 'close bg-white' : 'bg-dark-white'
+            navOpen ? 'close bg-white' : 'bg-dark-white'
           } ${screen === 'fluid' ? 'bg-white' : ''}`}
         >
           <div className="absolute inset-0 bg-blue rounded-full scale-0 transition-transform group-hover:scale-100"></div>
@@ -93,7 +93,7 @@ export const Header = ({ alt }) => {
           </div>
         </button>
 
-        <div className={`absolute top-full md:pt-10 max-md:left-0 max-md:px-5 pb-4 ${alt ? 'w-full md:w-[calc(100%+20rem)] md:right-0' : 'w-full'} ${navOpen ? '' : 'pointer-events-none'}`}>
+        <div className={`absolute top-full md:pt-10 max-md:left-0 max-md:px-5 pb-4 ${alt ? 'w-full md:w-[calc(100%+15rem)] md:right-0' : 'w-full'} ${navOpen ? '' : 'pointer-events-none'}`}>
           <div className={`w-full bg-white rounded-lg py-8 px-4 font-semibold text-xl uppercase transition-[transform,opacity] duration-500 ${navOpen ? '' : '-rotate-2 translate-y-10 opacity-0'}`}>
             <ul>
               <li className="w-full">

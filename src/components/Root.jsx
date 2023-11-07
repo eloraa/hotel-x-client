@@ -1,24 +1,67 @@
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
 import { Header } from './shared/Header';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { AppContext } from './context/App';
 
 export const Root = () => {
+  const { setScreen } = useContext(AppContext);
+  const locations = useLocation();
+  const [isLoaded, setLoaded] = useState(false);
+  const main = useRef();
 
-  const { setScreen } = useContext(AppContext)
-  const location = useLocation()
   useEffect(() => {
-    if(location.pathname === '/login' || location.pathname === '/register') {   
-      setScreen('fluid')
+    let interval;
+    interval = setInterval(() => {
+      if (main.current.classList.contains('animate-dissolve')) {
+        main.current?.classList.remove('animate-dissolve');
+        clearInterval(interval);
+      }
+    }, 500);
+
+    if (locations.pathname === '/login' || locations.pathname === '/register') {
+      setScreen('fluid');
+    } else {
+      setScreen(null);
     }
-    else {
-      setScreen(null)
+
+    return () => clearInterval(interval);
+  }, [setScreen, locations]);
+
+  useEffect(() => {
+    if (!isLoaded) {
+      document.addEventListener('click', e => {
+        let target = e.target;
+        while (target && target !== document.body) {
+          if (target.tagName === 'A') {
+            if (main.current?.classList.contains('animate-dissolve')) {
+              main.current?.classList.remove('animate-dissolve');
+              void main.current.offsetWidth;
+              main.current?.classList.add('animate-dissolve');
+            }
+            
+            if (main.current && target.pathname && target.pathname !== '/login' && target.pathname !== '/register' && locations.pathname !== '/login' && locations.pathname !== '/register') {
+              main.current?.classList.add('animate-dissolve');
+            }
+            return;
+          }
+          target = target.parentNode;
+        }
+      });
+    } else {
+      return () => {};
     }
-  }, [setScreen, location])
+    setLoaded(true);
+  }, [isLoaded, locations.pathname]);
+
   return (
     <>
       <Header></Header>
-      <Outlet></Outlet>
+
+      <main className="animate-dissolve" ref={main}>
+        <Outlet></Outlet>
+      </main>
+
+      <ScrollRestoration />
     </>
   );
 };

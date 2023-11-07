@@ -7,10 +7,10 @@ export default {
         sans: "'Open Sans', sans-serif",
       },
       colors: {
-        'blue': '#0016ec',
+        blue: '#0016ec',
         'dark-white': '#e4e6ef',
         'off-white': '#f0f1fa',
-        'green': '#c1ff00',
+        green: '#c1ff00',
       },
       keyframes: {
         glow: {
@@ -25,10 +25,32 @@ export default {
             transform: 'perspective(1000px) rotateY(0deg) rotateX(15deg) translateY(-40px)',
           },
         },
+        dissolve: {
+          from: {
+            filter: 'blur(0px)',
+            opacity: '1',
+          },
+          to: {
+            filter: 'blur(40px)',
+            opacity: '0',
+          },
+        },
+        'dissolve-in': {
+          from: {
+            filter: 'blur(40px)',
+            opacity: '0',
+          },
+          to: {
+            filter: 'blur(0px)',
+            opacity: '1',
+          },
+        },
       },
       animation: {
-        glow: 'glow 4s ease-in-out infinite',
-        '3d-rotate': '3d-rotate 10s linear infinite'
+        'glow': 'glow 4s ease-in-out infinite',
+        '3d-rotate': '3d-rotate 10s linear infinite',
+        'dissolve-in': 'dissolve-in 500ms ease',
+        'dissolve': 'dissolve 500ms ease forwards',
       },
     },
   },

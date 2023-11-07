@@ -10,7 +10,7 @@ import { Home } from './components/pages/Home';
 import { AppProvider } from './components/context/App';
 import { Profile } from './components/pages/Profile';
 import { PrivateRoute } from './components/utils/PrivateRoute';
-import { Gallery } from './components/shared/Gallery';
+import { Gallery } from './components/pages/Gallery';
 import { Registration } from './components/pages/Registration';
 
 const router = createBrowserRouter([
@@ -18,10 +18,12 @@ const router = createBrowserRouter([
     path: '/',
     element: <Root />,
     errorElement: <Error></Error>,
+    loader: () => new Promise(r => setTimeout(() => r('{id: 1}'), 1000)),
     children: [
       {
         path: '/',
         element: <Home></Home>,
+        loader: () => new Promise(r => setTimeout(() => r('{id: 1}'), 1000)),
       },
       {
         path: '/login',
@@ -41,8 +43,8 @@ const router = createBrowserRouter([
       },
       {
         path: '/gallery',
-        element: <Gallery></Gallery>
-      }
+        element: <Gallery></Gallery>,
+      },
     ],
   },
 ]);
