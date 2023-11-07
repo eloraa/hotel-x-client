@@ -4,6 +4,7 @@ import { useLayoutEffect, useRef } from 'react';
 import { Banner } from '../shared/Banner';
 import { Featured } from '../shared/Featured';
 import { FluidHero } from '../shared/FluidHero';
+import { Footer } from '../shared/Footer';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -68,7 +69,7 @@ export const Home = () => {
       <Banner></Banner>
       <Featured></Featured>
       <FluidHero></FluidHero>
-      <section className="bg-green h-screen sticky top-0 z-10 mt-[100vh]"></section>
+      <Footer></Footer>
     </div>
   );
 };

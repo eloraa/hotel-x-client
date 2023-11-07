@@ -21,7 +21,7 @@ export const Header = ({ alt }) => {
   };
   useEffect(() => {
     if(location.state === '/contact') {
-      scroll(document.querySelector('.fluid'))
+      scroll(document.querySelector('.contact'))
       location.state = '/'
     }
     setNavOpen(false);
@@ -33,7 +33,7 @@ export const Header = ({ alt }) => {
       navigate('/', { state: '/contact' })
       return
     }
-    scroll(document.querySelector('.fluid'))
+    scroll(document.querySelector('.contact'))
   }
 
   return (
