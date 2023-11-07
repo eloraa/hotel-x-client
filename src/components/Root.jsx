@@ -38,8 +38,7 @@ export const Root = () => {
               void main.current.offsetWidth;
               main.current?.classList.add('animate-dissolve');
             }
-            
-            if (main.current && target.pathname && target.pathname !== '/login' && target.pathname !== '/register' && locations.pathname !== '/login' && locations.pathname !== '/register') {
+            if (main.current && target.pathname && target.pathname !== '/login' && target.pathname !== '/register' && locations.pathname !== '/login' && locations.pathname !== '/register' && locations.pathname !== target.pathname) {
               main.current?.classList.add('animate-dissolve');
             }
             return;

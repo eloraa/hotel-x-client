@@ -18,12 +18,10 @@ const router = createBrowserRouter([
     path: '/',
     element: <Root />,
     errorElement: <Error></Error>,
-    loader: () => new Promise(r => setTimeout(() => r('{id: 1}'), 1000)),
     children: [
       {
         path: '/',
         element: <Home></Home>,
-        loader: () => new Promise(r => setTimeout(() => r('{id: 1}'), 1000)),
       },
       {
         path: '/login',
