@@ -1,24 +1,29 @@
 import { Helmet } from 'react-helmet-async';
 import { useNormalReq } from '../hooks/useNormalReq';
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Toast } from '../utils/Toast';
 import { Error } from '../shared/Error';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { register } from 'swiper/element/bundle';
 import 'swiper/css';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { Button } from '../utils/Button';
+import { useSecureReq } from '../hooks/useSecureReq';
+import { AuthContext } from '../providers/AuthProvider';
 
 export const Room = () => {
   useEffect(() => {
     register();
   }, []);
   const instance = useNormalReq();
+  const secureReq = useSecureReq();
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const params = useParams();
 
-  const { isPending, error, data } = useQuery({
+  const { refetch, isPending, error, data } = useQuery({
     queryKey: ['room'],
     queryFn: async () => {
       const { data } = await instance.get('/rooms/' + params.id);
@@ -29,7 +34,36 @@ export const Room = () => {
 
   if (isPending) return;
   if (!data) return <Error alt={true}></Error>;
+  const handleSubmit = e => {
+    e.preventDefault();
 
+    if (!user) {
+      navigate('/login', { state: location.pathname });
+      return;
+    }
+
+    const date = e.target.date.value;
+    if (isNaN(new Date(date).getTime())) {
+      Toast('Select a valid date.');
+      return;
+    }
+
+    secureReq
+      .post('/booking/book', {
+        uid: user.uid,
+        email: user.email,
+        roomId: data._id,
+      })
+      .then(res => {
+        if(res.data.success) {
+          refetch()
+          Toast('Successfully booked the room')
+        }
+      })
+      .catch(() => {
+        Toast('Something went wrong');
+      });
+  };
   return (
     <>
       <Helmet>
@@ -65,7 +99,7 @@ export const Room = () => {
             <div className="whitespace-nowrap flex gap-10">
               <div>
                 <h4>Room Size</h4>
-                <h1 className='mt-1'>{data.room_size}</h1>
+                <h1 className="mt-1">{data.room_size}</h1>
               </div>
               <div>
                 <h4>Perks</h4>
@@ -77,18 +111,22 @@ export const Room = () => {
               </div>
               <div>
                 <h1 className="font-bold">${data.price_per_night}</h1>
-                <h1 className='mt-1'>Total Review 12</h1>
+                <h1 className="mt-1">Total Review 12</h1>
               </div>
             </div>
           </div>
           <div className="mt-10">
-            <form className="flex items-center gap-5">
-              <Button type="open">Book Now</Button>
-              <h4 className='text-neutral-400'>Select a date: </h4>
-              <div>
-                <input type="date" name="date" />
-              </div>
-            </form>
+            {data.remaining_count ? (
+              <form onSubmit={handleSubmit} className="flex items-center gap-5">
+                <Button type="open">Book Now</Button>
+                <h4 className="text-neutral-400">Select a date: </h4>
+                <div>
+                  <input type="date" name="date" min={new Date().toISOString().split('T')[0]} />
+                </div>
+              </form>
+            ) : (
+              <div className="bg-dark-white rounded-lg mt-8 px-8 py-6 font-semibold md:w-[400px]">Not Available</div>
+            )}
           </div>
         </div>
       </div>

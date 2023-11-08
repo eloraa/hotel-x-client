@@ -1,7 +1,9 @@
 import axios from 'axios';
-import { getStoredValue, saveToLocale } from '../utils/localstorage';
+import { clearStorage, getStoredValue, saveToLocale } from '../utils/localstorage';
 import moment from 'moment/moment';
 import { useNormalReq } from './useNormalReq';
+import { signOut } from 'firebase/auth';
+import { auth } from '../providers/AuthProvider';
 
 export const useSecureReq = () => {
   const instance = axios.create({ baseURL: import.meta.env.VITE_BACKENDSERVER, withCredentials: true });
@@ -11,10 +13,14 @@ export const useSecureReq = () => {
       instance2
         .post('/auth/refresh-token', user)
         .then(res => {
+          console.log(res);
           saveToLocale(res.data.expires, 'expires');
           resolve(res);
         })
         .catch(err => {
+          clearStorage('expires')
+          clearStorage('user')
+          signOut(auth)
           reject(err);
         });
     });
@@ -25,7 +31,7 @@ export const useSecureReq = () => {
       const expires = getStoredValue('expires');
       const user = getStoredValue('user');
 
-      if (moment(expires).isBefore() && user && user.length) {
+      if (moment(expires).isBefore() || (user && user.length)) {
         refresh(user)
           .then(res => {
             return res;

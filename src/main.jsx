@@ -15,6 +15,7 @@ import { Registration } from './components/pages/Registration';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Room } from './components/pages/Room';
 import { Rooms } from './components/pages/Rooms';
+import { Bookings } from './components/pages/Bookings';
 
 const router = createBrowserRouter([
   {
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: '/room/:id',
         element: <Room></Room>
+      },
+      {
+        path: '/booking',
+        element: <PrivateRoute><Bookings></Bookings></PrivateRoute>
       }
     ],
   },

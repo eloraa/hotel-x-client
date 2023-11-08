@@ -58,7 +58,7 @@ export const Featured = () => {
                 </div>
                 <p className="font-medium mt-6">{e.room_description}</p>
                 <div className="flex gap-5 mt-6">
-                  <Ratings count={4} type="diamond"></Ratings>
+                  <Ratings count={5} type="diamond"></Ratings>
                   <h4 className="text-sm font-semibold">5 Star Rating</h4>
                 </div>
                 <div className="mt-16">
