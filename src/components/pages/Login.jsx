@@ -3,6 +3,7 @@ import { useContext, useEffect, useRef } from 'react';
 import { AuthContext } from '../providers/AuthProvider';
 import { Effect } from '../shared/Effect';
 import { Toast } from '../utils/Toast';
+import { Helmet } from 'react-helmet-async';
 
 export const Login = () => {
   const { signIn, user, googleSignin, resetPassword } = useContext(AuthContext);
@@ -60,6 +61,9 @@ export const Login = () => {
   };
   return (
     <div className="fixed inset-0 bg-blue flex items-center justify-center max-md:pt-20">
+      <Helmet>
+        <title>Login | Hotel</title>
+      </Helmet>
       <Effect></Effect>
       <div className="flex flex-col justify-center items-center w-full md:px-10 px-5 md:w-[28rem] max-w-md">
         <div className="md:px-10 px-5 py-14 bg-white rounded-lg text-center max-md:w-full w-full">

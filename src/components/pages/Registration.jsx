@@ -3,6 +3,7 @@ import { useContext, useEffect } from 'react';
 import { AuthContext } from '../providers/AuthProvider';
 import { Effect } from '../shared/Effect';
 import { Toast } from '../utils/Toast';
+import { Helmet } from 'react-helmet-async';
 
 export const Registration = () => {
   const { createUser, user, googleSignin } = useContext(AuthContext);
@@ -35,7 +36,13 @@ export const Registration = () => {
 
     if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(e.target.email.value)) email = e.target.email.value;
     if (/^(?=.*[A-Z]).{8,}$/.test(e.target.password.value)) password = e.target.password.value;
-    else Toast(<h4 className="text-sm">The password <strong>should be at least 6 characters</strong> and must contain <strong>a capital letter</strong> and <strong>a special character</strong>.</h4>, 5000)
+    else
+      Toast(
+        <h4 className="text-sm">
+          The password <strong>should be at least 6 characters</strong> and must contain <strong>a capital letter</strong> and <strong>a special character</strong>.
+        </h4>,
+        5000
+      );
 
     if (email && password) {
       createUser(email, password)
@@ -52,6 +59,9 @@ export const Registration = () => {
 
   return (
     <div className="fixed inset-0 bg-blue flex items-center justify-center max-md:pt-20">
+      <Helmet>
+        <title>Register | Hotel</title>
+      </Helmet>
       <Effect></Effect>
       <div className="flex flex-col justify-center items-center w-full md:px-10 px-5 md:w-[28rem] max-w-md">
         <div className="md:px-10 px-5 py-14 bg-white rounded-lg text-center max-md:w-full">

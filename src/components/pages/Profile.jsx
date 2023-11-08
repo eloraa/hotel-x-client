@@ -5,6 +5,7 @@ import { selectFile } from '../utils/utils';
 import { saveToStorage } from '../providers/StorageProvider';
 import { Toast } from '../utils/Toast';
 import toast from 'react-hot-toast';
+import { Helmet } from 'react-helmet-async';
 
 export const Profile = () => {
   const formRef = useRef(null);
@@ -56,7 +57,7 @@ export const Profile = () => {
     if (file) {
       toasts = Toast('Updating profile...');
       if (!file.type.startsWith('image/')) {
-        toast.dismiss(toasts)
+        toast.dismiss(toasts);
         Toast('Upload a valid image.');
         return;
       }
@@ -66,19 +67,19 @@ export const Profile = () => {
         .then(url => {
           updateUser(name, url)
             .then(() => {
-              toast.dismiss(toasts)
+              toast.dismiss(toasts);
               Toast('User Updated Successfully');
               navigate('/');
             })
             .catch(() => {
               setIsUpdating(false);
-              toast.dismiss(toasts)
+              toast.dismiss(toasts);
               Toast('Something went wrong');
             });
         })
         .catch(() => {
           setIsUpdating(false);
-          toast.dismiss(toasts)
+          toast.dismiss(toasts);
           Toast('something went wrong');
         });
 
@@ -89,13 +90,13 @@ export const Profile = () => {
       if (name === null) name = '';
       updateUser(name, selectedImage)
         .then(() => {
-          toast.dismiss(toasts)
+          toast.dismiss(toasts);
           Toast('User Updated Successfully');
           navigate('/');
         })
         .catch(() => {
           setIsUpdating(false);
-          toast.dismiss(toasts)
+          toast.dismiss(toasts);
           Toast('Something went wrong');
         });
       return;
@@ -107,18 +108,18 @@ export const Profile = () => {
         if (photoURL === null) photoURL = '';
         updateUser(name, photoURL)
           .then(() => {
-            toast.dismiss(toasts)
+            toast.dismiss(toasts);
             Toast('User Updated Successfully');
             navigate('/');
           })
           .catch(() => {
             setIsUpdating(false);
-            toast.dismiss(toasts)
+            toast.dismiss(toasts);
             Toast('Something went wrong');
           });
         return;
       }
-      toast.dismiss(toasts)
+      toast.dismiss(toasts);
       toasts = Toast('Nothing to update.');
     }
   };
@@ -126,6 +127,9 @@ export const Profile = () => {
   return (
     <>
       <main className={`py-6 md:px-10 px-5 animate-dissolve-in ${isUpdating ? 'opacity-10 cursor-not-allowed [&_*]:cursor-not-allowed select-none' : ''}`}>
+        <Helmet>
+          <title>Profile | Hotel</title>
+        </Helmet>
         <div className="flex justify-between items-center mb-16">
           <h1 className="font-semibold text-xl">{editState && 'Update '}Your Profile</h1>
           <button

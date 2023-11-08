@@ -13,6 +13,7 @@ import { PrivateRoute } from './components/utils/PrivateRoute';
 import { Gallery } from './components/pages/Gallery';
 import { Registration } from './components/pages/Registration';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Room } from './components/pages/Room';
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
         path: '/gallery',
         element: <Gallery></Gallery>,
       },
+      {
+        path: '/rooms/:id',
+        element: <Room></Room>
+      }
     ],
   },
 ]);

@@ -3,6 +3,7 @@ import { Header } from './shared/Header';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { AppContext } from './context/App';
 import { Toaster, useToaster } from 'react-hot-toast';
+import { HelmetProvider } from 'react-helmet-async';
 
 export const Root = () => {
   const { setScreen } = useContext(AppContext);
@@ -17,8 +18,7 @@ export const Root = () => {
   useEffect(() => {
     if (toasts.length && toasts.filter(toast => toast.visible).length) {
       setToasters(true);
-    }
-    else setToasters(false)
+    } else setToasters(false);
   }, [toasts]);
 
   useEffect(() => {
@@ -74,11 +74,13 @@ export const Root = () => {
 
   return (
     <>
-      <Header></Header>
+      <HelmetProvider>
+        <Header></Header>
 
-      <main className="animate-dissolve" ref={main}>
-        <Outlet></Outlet>
-      </main>
+        <main className="animate-dissolve" ref={main}>
+          <Outlet></Outlet>
+        </main>
+      </HelmetProvider>
 
       <ScrollRestoration />
       <Toaster position="bottom-center" reverseOrder={false} />

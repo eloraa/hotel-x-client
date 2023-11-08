@@ -12,6 +12,7 @@ export const Featured = () => {
   const changeSlide = i => {
     setActiveSlide(i);
   };
+  const instance = useNormalReq();
 
   const { isPending, error, data } = useQuery({
     queryKey: ['featuredRooms'],
@@ -21,7 +22,6 @@ export const Featured = () => {
     },
   });
 
-  const instance = useNormalReq();
 
   if(error) Toast('Something went wrong')
 
@@ -62,7 +62,7 @@ export const Featured = () => {
                   <h4 className="text-sm font-semibold">5 Star Rating</h4>
                 </div>
                 <div className="mt-16">
-                  <Link to={'/rooms' + e._id}>
+                  <Link to={'/rooms/' + e._id}>
                     <Button type="open">Book Now</Button>
                   </Link>
                 </div>

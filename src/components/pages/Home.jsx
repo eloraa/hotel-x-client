@@ -5,6 +5,7 @@ import { Banner } from '../shared/Banner';
 import { Featured } from '../shared/Featured';
 import { FluidHero } from '../shared/FluidHero';
 import { Footer } from '../shared/Footer';
+import { Helmet } from 'react-helmet-async';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -66,6 +67,9 @@ export const Home = () => {
 
   return (
     <div ref={main}>
+      <Helmet>
+        <title>Home | Hotel</title>
+      </Helmet>
       <Banner></Banner>
       <Featured></Featured>
       <FluidHero></FluidHero>
