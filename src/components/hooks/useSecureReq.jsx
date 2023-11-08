@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { getStoredValue, saveToLocale } from '../utils/localstorage';
 import moment from 'moment/moment';
+import { useNormalReq } from './useNormalReq';
 
 export const useSecureReq = () => {
   const instance = axios.create({ baseURL: import.meta.env.VITE_BACKENDSERVER, withCredentials: true });
-  const instance2 = axios.create({ baseURL: import.meta.env.VITE_BACKENDSERVER, withCredentials: true });
+  const instance2 = useNormalReq()
   const refresh = user => {
     return new Promise((resolve, reject) => {
       instance2
@@ -24,7 +25,7 @@ export const useSecureReq = () => {
       const expires = getStoredValue('expires');
       const user = getStoredValue('user');
 
-      if (moment(expires).isBefore() && user) {
+      if (moment(expires).isBefore() && user && user.length) {
         refresh(user)
           .then(res => {
             return res;
