@@ -14,6 +14,7 @@ import { Gallery } from './components/pages/Gallery';
 import { Registration } from './components/pages/Registration';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Room } from './components/pages/Room';
+import { Rooms } from './components/pages/Rooms';
 
 const router = createBrowserRouter([
   {
@@ -46,7 +47,11 @@ const router = createBrowserRouter([
         element: <Gallery></Gallery>,
       },
       {
-        path: '/rooms/:id',
+        path: '/rooms',
+        element: <Rooms></Rooms>
+      },
+      {
+        path: '/room/:id',
         element: <Room></Room>
       }
     ],

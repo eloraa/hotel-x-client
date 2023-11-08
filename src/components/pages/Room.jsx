@@ -30,7 +30,6 @@ export const Room = () => {
   if (isPending) return;
   if (!data) return <Error alt={true}></Error>;
 
-  console.log(data);
   return (
     <>
       <Helmet>

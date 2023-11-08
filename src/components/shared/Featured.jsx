@@ -62,7 +62,7 @@ export const Featured = () => {
                   <h4 className="text-sm font-semibold">5 Star Rating</h4>
                 </div>
                 <div className="mt-16">
-                  <Link to={'/rooms/' + e._id}>
+                  <Link to={'/room/' + e._id}>
                     <Button type="open">Book Now</Button>
                   </Link>
                 </div>
