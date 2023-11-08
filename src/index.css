@@ -18,3 +18,9 @@ video {
     background: #000;
     border-radius: 9999999px;
 }
+
+input.appearance-none[type="date"]::-webkit-inner-spin-button,
+input.appearance-none[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}

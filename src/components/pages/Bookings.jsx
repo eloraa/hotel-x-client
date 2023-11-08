@@ -6,6 +6,7 @@ import { useSecureReq } from '../hooks/useSecureReq';
 import { AuthContext } from '../providers/AuthProvider';
 import { Toast } from '../utils/Toast';
 import { getDate, getDayDiff } from '../utils/utils';
+import { Link } from 'react-router-dom';
 
 export const Bookings = () => {
   const { bookings, setBookings } = useContext(DataContext);
@@ -43,11 +44,20 @@ export const Bookings = () => {
             Toast('Something went wrong');
           });
       })
-      .catch(() => {});
+      .catch(() => {
+        setDeleting(false);
+      });
   };
+
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const handleSubmit = (e, id) => {
     e.preventDefault();
+
+    if (!isUpdating) {
+      setIsUpdating(true);
+      return;
+    }
 
     const date = e.target.date.value;
     if (isNaN(new Date(date).getTime())) {
@@ -64,6 +74,7 @@ export const Bookings = () => {
       })
       .then(res => {
         if (res.data.success) {
+          setIsUpdating(false);
           Toast('Successfully update booking for the the room');
           setBookings(
             bookings.filter(e => {
@@ -89,29 +100,41 @@ export const Bookings = () => {
               bookings.length &&
               bookings.map(booking => (
                 <div key={booking._id}>
-                  <div className="flex justify-between">
-                    <h1 className="text-md font-semibold">{booking.room_type}</h1>
+                  <div className="flex justify-between items-center">
+                    <Link to={'/room/' + booking.roomId}>
+                      <h1 className="text-md font-semibold">{booking.room_type}</h1>
+                    </Link>
                     <h4 className="text-sm">{booking.date}</h4>
                   </div>
-                  <figure className="h-[420px] mt-2">
+                  <figure className="h-[420px] mt-4">
                     <img className="object-cover" src={booking.room_images[0]} alt="" />
                   </figure>
+                  <div>
+                    <form onSubmit={e => handleSubmit(e, booking.roomId)} className="mt-6">
+                      <div className="mt-2 border-b border-dark-white relative flex items-center">
+                        {isUpdating && (
+                          <div className="absolute">
+                            <input onClick={e => e.target.showPicker()} className="outline-none border-none appearance-none" type="date" name="date" min={new Date().toISOString().split('T')[0]} />
+                          </div>
+                        )}
+                        <Button
+                          offset={true}
+                          className={`w-full pb-4 [&>.icon]:w-4 [&>.icon]:h-4 [&>.icon]:transition-transform ${isUpdating ? '[&>.icon]:-100' : '[&>.icon]:scale-0'}`}
+                          iconClass="icon"
+                        >
+                          Update
+                        </Button>
+                      </div>
+                    </form>
+                  </div>
                   <div className="flex mt-4 justify-between text-sm">
                     {!isDeleting && getDayDiff(booking.date, getDate(new Date())) > 2 && (
-                      <div onClick={() => handleDelete(booking.roomId, booking.room_type)} className="text-red font-bold">
-                        Cancel
+                      <div onClick={() => handleDelete(booking.roomId, booking.room_type)} className="text-red font-bold w-full">
+                        <Button className="w-full [&>.icon]:w-4 [&>.icon]:h-4" iconClass="icon" offset={true} type="del">
+                          Cancel the bookings
+                        </Button>
                       </div>
                     )}
-                  </div>
-                  <div>
-                    <form onSubmit={e=> handleSubmit(e, booking.roomId)} className='mt-6'>
-                      <h4 className="text-neutral-400">Select a date: </h4>
-                      <div className='w-full'>
-                        <input className='w-full' type="date" name="date" min={new Date().toISOString().split('T')[0]} />
-                      </div>
-                      <div className='mt-2' >
-                      <Button>Update</Button></div>
-                    </form>
                   </div>
                 </div>
               ))}

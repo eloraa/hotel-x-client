@@ -7,11 +7,13 @@ import { HelmetProvider } from 'react-helmet-async';
 import { useSecureReq } from './hooks/useSecureReq';
 import { AuthContext } from './providers/AuthProvider';
 import { Toast } from './utils/Toast';
+import { getStoredValue } from './utils/localstorage';
+import moment from 'moment';
 
 export const DataContext = createContext(null);
 export const Root = () => {
   const { setScreen } = useContext(AppContext);
-  const { user } = useContext(AuthContext)
+  const { user, getToken } = useContext(AuthContext)
   const locations = useLocation();
   const [isLoaded, setLoaded] = useState(false);
   const main = useRef();
@@ -89,6 +91,8 @@ export const Root = () => {
         console.log(err);
         Toast('Something went wrong')
       })
+
+      if(moment(getStoredValue('expires')).isBefore()) getToken(user)
     }
   }, [user, location])
  

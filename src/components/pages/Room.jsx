@@ -1,3 +1,4 @@
+import 'swiper/css';
 import { Helmet } from 'react-helmet-async';
 import { useNormalReq } from '../hooks/useNormalReq';
 import { useQuery } from '@tanstack/react-query';
@@ -6,12 +7,12 @@ import { Toast } from '../utils/Toast';
 import { Error } from '../shared/Error';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { register } from 'swiper/element/bundle';
-import 'swiper/css';
 import { useContext, useEffect } from 'react';
 import { Button } from '../utils/Button';
 import { useSecureReq } from '../hooks/useSecureReq';
 import { AuthContext } from '../providers/AuthProvider';
 import { DataContext } from '../Root';
+import { RatingsInput } from '../utils/RatingsInput';
 
 export const Room = () => {
   useEffect(() => {
@@ -72,6 +73,44 @@ export const Room = () => {
       });
   };
 
+  const handleReview = e => {
+    e.preventDefault();
+
+    if (!user) {
+      navigate('/login', { state: location.pathname });
+      return;
+    }
+
+    const date = new Date()
+    const name = e.target.name.value
+    const details = e.target.details.value
+    const rating = e.target.rating.value
+
+    console.log(name, details, rating);
+
+    if(details.length < 15) return Toast(<>Your review details should be at least <b>15 characters</b> long</>)
+    if(!name || !details || !rating || name === '' || details === '' || rating === '') return Toast('Check your input value')
+
+    secureReq
+      .post('/review', {
+        uid: user.uid,
+        email: user.email,
+        name,
+        date,
+        details
+      })
+      .then(res => {
+        if (res.data.success) {
+          Toast('Successfully booked the room');
+          navigate('/booking');
+        } else Toast('Already booked or something is wrong');
+      })
+      .catch(err => {
+        console.log(err.response);
+        Toast('Something went wrong');
+      });
+  };
+
   return (
     <>
       <Helmet>
@@ -80,6 +119,26 @@ export const Room = () => {
 
       <div className="md:px-10 px-5 py-12">
         <h1 className="text-4xl font-bold">{data.room_type}</h1>
+
+        <div className="fixed inset-0 [background:linear-gradient(90deg,rgba(155,155,155,.35)_0%,rgba(255,255,255,0.20)_8.55%,rgba(255,255,255,_0.20)_97.55%,rgba(155,155,155,.35)_100%),linear-gradient(0deg,rgba(11,11,18,0.10)_0%,rgba(11,11,18,0.00)_100%)] flex items-center justify-center z-10">
+          <div className="flex flex-col justify-center items-center w-full md:px-10 px-5 md:w-[28rem] max-w-md">
+            <div className="md:px-10 px-5 py-14 bg-white rounded-lg text-center max-md:w-full w-full">
+              <h1 className="font-semibold">Write us a Review</h1>
+              <form onSubmit={handleReview} className="mt-6 grid gap-4">
+                <div className="w-full">
+                  <input className="w-full py-4 outline-none px-6 rounded-md bg-off-white" type="text" name="name" placeholder="Name" defaultValue={user?.displayName} required />
+                </div>
+                <div className="w-full">
+                  <textarea className="w-full py-4 outline-none px-6 rounded-md bg-off-white resize-none" name="details" rows={4} placeholder="Write are you thinking?" required></textarea>
+                </div>
+                <div className="w-full flex items-center gap-4 py-4">
+                  <RatingsInput className="w-full flex items-center justify-center gap-5" iconClass="bg-blue"></RatingsInput>
+                </div>
+                <button className="bg-black w-full max-md:mt-6 py-5 text-white font-bold rounded-md active:scale-[.99] transition-transform text-sm">Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
         <div className="mt-10">
           <Swiper navigation={{ nextEl: '.next', prevEl: '.prev' }} className="h-full w-full" mousewheel={false} loop={true} autoplay={{ delay: 3000 }}>
             {data &&
@@ -105,23 +164,23 @@ export const Room = () => {
           </div>
           <div className="flex justify-between text-sm font-medium mt-16 gap-5 max-md:flex-wrap">
             <p>{data.room_description}</p>
-            <div className="whitespace-nowrap flex gap-10 max-md:flex-wrap">
+            <div className="whitespace-nowrap font-normal flex gap-10 max-md:flex-wrap">
               <div>
                 <h4>Room Size</h4>
-                <h1 className="mt-1">{data.room_size}</h1>
+                <h1 className="mt-1 font-semibold">{data.room_size}</h1>
               </div>
               <div>
                 <h4>Perks</h4>
-                <h1 className="flex gap-1 mt-1 flex-wrap">{data && data.available_with_room.map((perk, i) => <span key={i}>{perk}</span>)}</h1>
+                <h1 className="flex gap-1 mt-1 flex-wrap font-semibold">{data && data.available_with_room.map((perk, i) => <span key={i}>{perk}</span>)}</h1>
               </div>
               <div>
-                <h1 className="font-bold">${data.price_per_night}</h1>
-                <h1 className="mt-1">Total Review 12</h1>
+                <h1 className="font-bold text-right">${data.price_per_night}</h1>
+                <h1 className="mt-1 font-semibold">Total Review 12</h1>
               </div>
             </div>
           </div>
           <div className="mt-10">
-            {data.remaining_count && booking && !booking.length ? (
+            {!user || (data.remaining_count && booking && !booking.length) ? (
               <form onSubmit={handleSubmit} className="flex items-center gap-5 max-md:flex-wrap">
                 <Button type="open">Book Now</Button>
                 <h4 className="text-neutral-400">Select a date: </h4>
@@ -130,7 +189,18 @@ export const Room = () => {
                 </div>
               </form>
             ) : (
-              <div className="bg-dark-white rounded-lg mt-8 px-8 py-6 font-semibold md:w-[400px]">{booking && booking.length ? 'Already booked' : 'Not Available'}</div>
+              <div className="bg-dark-white rounded-lg mt-8 px-8 py-6 font-semibold w-full md:w-auto inline-block">
+                {booking && booking.length ? (
+                  <div className="flex items-center justify-between flex-wrap md:gap-10 max-md:justify-center text-center">
+                    <h4>You have already booked this room</h4>
+                    <Button offset={true} className="gap-x-6 [&>.icon]:stroke-1 [&>.icon]:stroke-blue max-md:mt-8 text-blue" iconClass="icon">
+                      Write us a review
+                    </Button>
+                  </div>
+                ) : (
+                  'Not Available'
+                )}
+              </div>
             )}
           </div>
         </div>

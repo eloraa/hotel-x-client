@@ -20,7 +20,7 @@ import { clearStorage, saveToLocale } from '../utils/localstorage';
 
 export const AuthContext = createContext(null);
 
-export const auth = getAuth(app);
+const auth = getAuth(app);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
