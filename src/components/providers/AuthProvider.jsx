@@ -27,7 +27,35 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const secureReq = useSecureReq();
+  const saveToCloud = user => {
+    secureReq
+      .post('/auth/add-user', user)
+      .then(res => {
+        saveToLocale(res.data.expires, 'expires');
+      })
+      .catch(() => {
+        Toast('Something went wrong');
+      });
+  };
 
+  const getToken = user => {
+    secureReq
+      .post('/auth/get-token', user)
+      .then(res => {
+        saveToLocale(res.data.expires, 'expires');
+      })
+      .catch(() => {
+        signOut();
+        Toast('Something went wrong');
+      });
+  };
+  const updateCloudUser = user => {
+    secureReq
+      .post('/auth/update-user', user)
+      .catch(() => {
+        Toast('Something went wrong');
+      });
+  };
   const createUser = (email, password) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password).then(res => {
@@ -69,34 +97,13 @@ const AuthProvider = ({ children }) => {
     return updateProfile(auth.currentUser, {
       displayName,
       photoURL,
-    });
+    }).then(() => {
+      updateCloudUser(auth.currentUser);
+    })
   };
 
   const verifyEmail = () => sendEmailVerification(auth.currentUser);
   const resetPassword = email => sendPasswordResetEmail(auth, email);
-
-  const saveToCloud = user => {
-    secureReq
-      .post('/auth/add-user', user)
-      .then(res => {
-        saveToLocale(res.data.expires, 'expires');
-      })
-      .catch(() => {
-        Toast('Something went wrong');
-      });
-  };
-
-  const getToken = user => {
-    secureReq
-      .post('/auth/get-token', user)
-      .then(res => {
-        saveToLocale(res.data.expires, 'expires');
-      })
-      .catch(() => {
-        signOut();
-        Toast('Something went wrong');
-      });
-  };
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, currentUser => {

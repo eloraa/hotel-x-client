@@ -1,4 +1,4 @@
-import { Outlet, ScrollRestoration, useLoaderData, useLocation } from 'react-router-dom';
+import { Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
 import { Header } from './shared/Header';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { AppContext } from './context/App';
