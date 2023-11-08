@@ -5,9 +5,10 @@ import { ConfirmToast } from '../utils/ConfirmToast';
 import { useSecureReq } from '../hooks/useSecureReq';
 import { AuthContext } from '../providers/AuthProvider';
 import { Toast } from '../utils/Toast';
+import { getDate, getDayDiff } from '../utils/utils';
 
 export const Bookings = () => {
-  const { bookings } = useContext(DataContext);
+  const { bookings, setBookings } = useContext(DataContext);
   const { user } = useContext(AuthContext);
 
   const instance = useSecureReq();
@@ -29,6 +30,9 @@ export const Bookings = () => {
           .put('/booking', data)
           .then(res => {
             if (res.data.success) {
+              if (bookings && bookings.length) {
+                setBookings(bookings.filter(e => e.roomId !== id));
+              }
               setDeleting(false);
               Toast('Successfully deleted');
             }
@@ -41,6 +45,40 @@ export const Bookings = () => {
       })
       .catch(() => {});
   };
+
+  const handleSubmit = (e, id) => {
+    e.preventDefault();
+
+    const date = e.target.date.value;
+    if (isNaN(new Date(date).getTime())) {
+      Toast('Select a valid date.');
+      return;
+    }
+
+    instance
+      .patch('/booking/update', {
+        uid: user.uid,
+        email: user.email,
+        roomId: id,
+        date: date,
+      })
+      .then(res => {
+        if (res.data.success) {
+          Toast('Successfully update booking for the the room');
+          setBookings(
+            bookings.filter(e => {
+              if (e.roomId === id) e.date = date;
+              return e;
+            })
+          );
+        } else Toast('something is wrong');
+      })
+      .catch(err => {
+        console.log(err.response);
+        Toast('Something went wrong');
+      });
+  };
+
   return (
     <div className="md:px-10 px-5 py-12">
       <h1 className="text-4xl font-bold uppercase">Your Bookings</h1>
@@ -58,16 +96,22 @@ export const Bookings = () => {
                   <figure className="h-[420px] mt-2">
                     <img className="object-cover" src={booking.room_images[0]} alt="" />
                   </figure>
-
                   <div className="flex mt-4 justify-between text-sm">
-                    <div>
-                      <Button>Update</Button>
-                    </div>
-                    {!isDeleting && (
-                      <button onClick={() => handleDelete(booking.roomId, booking.room_type)} className="text-red font-bold">
+                    {!isDeleting && getDayDiff(booking.date, getDate(new Date())) > 2 && (
+                      <div onClick={() => handleDelete(booking.roomId, booking.room_type)} className="text-red font-bold">
                         Cancel
-                      </button>
+                      </div>
                     )}
+                  </div>
+                  <div>
+                    <form onSubmit={e=> handleSubmit(e, booking.roomId)} className='mt-6'>
+                      <h4 className="text-neutral-400">Select a date: </h4>
+                      <div className='w-full'>
+                        <input className='w-full' type="date" name="date" min={new Date().toISOString().split('T')[0]} />
+                      </div>
+                      <div className='mt-2' >
+                      <Button>Update</Button></div>
+                    </form>
                   </div>
                 </div>
               ))}

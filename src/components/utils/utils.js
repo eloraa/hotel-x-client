@@ -26,11 +26,27 @@ export const scroll = y => {
   if (y instanceof HTMLElement) {
     scrollTo = y.offsetTop;
   }
-  if(scrollTo === window.scrollY) return
+  if (scrollTo === window.scrollY) return;
   gsap.to(scrolling, {
     value: scrollTo,
     duration: 1,
     ease: 'power1.ease',
     onUpdate: () => window.scrollTo(0, scrolling.value),
   });
+};
+
+export const getDate = () => {
+  const date = new Date();
+
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+};
+
+export const getDayDiff = (d1, d2) => {
+  const timeDiff = new Date(d1) - new Date(d2);
+
+  return Math.floor(timeDiff / (1000 * 60 * 60 * 24));
 };
