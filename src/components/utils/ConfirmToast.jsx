@@ -4,7 +4,7 @@ export const ConfirmToast = (children, color) => {
   return new Promise((resolve, reject) => {
     toast.custom(
       t => (
-        <div className={`${t.visible ? 'animate-enter' : 'animate-leave'} max-w-xl w-full bg-white rounded-lg pointer-events-auto py-6 px-8 flex items-center justify-between flex-wrap`}>
+        <div className={`${t.visible ? 'animate-enter' : 'animate-leave'} max-w-3xl w-full bg-white rounded-lg pointer-events-auto py-6 px-8 flex items-center justify-between flex-wrap`}>
           <div>{children}</div>
           <div className="flex items-center">
             <button

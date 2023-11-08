@@ -37,7 +37,7 @@ export const Room = () => {
   if (isPending) return;
   if (!data) return <Error alt={true}></Error>;
   let booking;
-  if (data) booking = bookings.filter(e => e.roomId === data._id);
+  if (data && bookings) booking = bookings.filter(e => e.roomId === data._id);
   const handleSubmit = e => {
     e.preventDefault();
 
@@ -121,7 +121,7 @@ export const Room = () => {
             </div>
           </div>
           <div className="mt-10">
-            {data.remaining_count && !booking.length ? (
+            {data.remaining_count && booking && !booking.length ? (
               <form onSubmit={handleSubmit} className="flex items-center gap-5 max-md:flex-wrap">
                 <Button type="open">Book Now</Button>
                 <h4 className="text-neutral-400">Select a date: </h4>
@@ -130,7 +130,7 @@ export const Room = () => {
                 </div>
               </form>
             ) : (
-              <div className="bg-dark-white rounded-lg mt-8 px-8 py-6 font-semibold md:w-[400px]">{booking.length ? 'Already booked' : 'Not Available'}</div>
+              <div className="bg-dark-white rounded-lg mt-8 px-8 py-6 font-semibold md:w-[400px]">{booking && booking.length ? 'Already booked' : 'Not Available'}</div>
             )}
           </div>
         </div>
