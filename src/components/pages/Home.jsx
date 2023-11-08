@@ -1,15 +1,29 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useLayoutEffect, useRef } from 'react';
+import { useContext, useEffect, useLayoutEffect, useRef } from 'react';
 import { Banner } from '../shared/Banner';
 import { Featured } from '../shared/Featured';
 import { FluidHero } from '../shared/FluidHero';
 import { Footer } from '../shared/Footer';
+import { useSecureReq } from '../hooks/useSecureReq';
+import { AuthContext } from '../providers/AuthProvider';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export const Home = () => {
   const main = useRef(null);
+
+  const { signOutUser } = useContext(AuthContext)
+
+  const secureReq = useSecureReq()
+  useEffect(() => {
+    secureReq.get('/rooms').then(res => {
+      console.log(res.data);
+    })
+    .catch(() => {
+      signOutUser()
+    })
+  }, []);
 
   useLayoutEffect(() => {
     if (main.current) {

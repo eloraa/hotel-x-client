@@ -14,9 +14,9 @@ import {
   updateProfile,
 } from 'firebase/auth';
 import { app } from '../utils/firebase.config';
-import { useAuthReq } from '../hooks/useAuthReq';
+import { useSecureReq } from '../hooks/useSecureReq';
 import { Toast } from '../utils/Toast';
-import { saveToLocale } from '../utils/localstorage';
+import { clearStorage, saveToLocale } from '../utils/localstorage';
 
 export const AuthContext = createContext(null);
 
@@ -26,40 +26,61 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const authReq = useAuthReq();
+  const secureReq = useSecureReq();
 
   const saveToCloud = user => {
-    authReq
-      .post('/auth/add', { ...user, name:user.displayName })
+    secureReq
+      .post('/auth/add-user', user)
       .then(res => {
         saveToLocale(res.data.expires, 'expires');
       })
-      .catch(() => {
+      .catch(err => {
+        console.log(err);
+        Toast('Something went wrong');
+      });
+  };
+
+  const getToken = user => {
+    secureReq
+      .post('/auth/get-token', user)
+      .then(res => {
+        saveToLocale(res.data.expires, 'expires');
+      })
+      .catch(err => {
+        console.log(err);
         Toast('Something went wrong');
       });
   };
   const createUser = (email, password) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password).then(res => {
-        saveToCloud(res.user)
+      saveToCloud(res.user);
+      return res;
     });
   };
   const signIn = (email, password) => {
     setLoading(true);
-    return signInWithEmailAndPassword(auth, email, password);
+    return signInWithEmailAndPassword(auth, email, password).then(res => {
+      getToken(res.user);
+      return res;
+    });
   };
   const googleSignin = () => {
     setLoading(true);
     return signInWithPopup(auth, new GoogleAuthProvider()).then(res => {
       const { isNewUser } = getAdditionalUserInfo(res);
       if (isNewUser) {
-        saveToCloud(res.user)
+        saveToCloud(res.user);
+      } else {
+        getToken(res.user);
       }
       return res;
     });
   };
 
   const signOutUser = () => {
+    clearStorage('expires');
+    clearStorage('user');
     setLoading(true);
     return signOut(auth);
   };
@@ -76,13 +97,16 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, currentUser => {
+      if(currentUser) saveToLocale({ email: currentUser.email, uid: currentUser.uid }, 'user')
       setUser(currentUser);
       setLoading(false);
     });
     return () => unSubscribe();
   }, []);
 
-  return <AuthContext.Provider value={{ user, createUser, signIn, updateUser, verifyEmail, resetPassword, googleSignin, signOutUser, loading }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ user, createUser, signIn, updateUser, verifyEmail, resetPassword, googleSignin, signOutUser, saveToCloud, getToken, loading }}>{children}</AuthContext.Provider>
+  );
 };
 
 AuthProvider.propTypes = {
