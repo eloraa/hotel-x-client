@@ -37,7 +37,7 @@ export const Rooms = () => {
     }
   }, [location, data, queryParams]);
 
-  if (error) Toast('Something went wrong');
+  if (error) return Toast('Something went wrong');
 
   if (isPending) return;
   const handleChange = e => {
@@ -57,7 +57,7 @@ export const Rooms = () => {
             <div className="flex items-center gap-1">
               <h4 className="text-neutral-400 absolute left-6">Sort By:</h4>
               <select name="sort" className="appearance-none outline-none bg-transparent border-none font-semibold py-4 pl-20 pr-16 z-10 cursor-pointer" onChange={handleChange} defaultValue={queryParams.get('sort')}>
-                <option disabled selected>Sort</option>
+                <option disabled value="default">Sort</option>
                 <option value="high">Price High to Low</option>
                 <option value="low">Price Low to High</option>
               </select>

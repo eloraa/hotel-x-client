@@ -1,12 +1,17 @@
-import { Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
+import { Outlet, ScrollRestoration, useLoaderData, useLocation } from 'react-router-dom';
 import { Header } from './shared/Header';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { AppContext } from './context/App';
 import { Toaster, useToaster } from 'react-hot-toast';
 import { HelmetProvider } from 'react-helmet-async';
+import { useSecureReq } from './hooks/useSecureReq';
+import { AuthContext } from './providers/AuthProvider';
+import { Toast } from './utils/Toast';
 
+export const DataContext = createContext(null);
 export const Root = () => {
   const { setScreen } = useContext(AppContext);
+  const { user } = useContext(AuthContext)
   const locations = useLocation();
   const [isLoaded, setLoaded] = useState(false);
   const main = useRef();
@@ -72,15 +77,32 @@ export const Root = () => {
     setLoaded(true);
   }, [isLoaded, locations.pathname]);
 
+  const [bookings, setBookings] = useState(null)
+  const location = useLocation()
+  const instance = useSecureReq()
+  useEffect(() => {
+    if(user) {
+      instance.get('/booking/' + user.uid).then(res => {
+        setBookings(res.data)
+      })
+      .catch((err) => {
+        console.log(err);
+        Toast('Something went wrong')
+      })
+    }
+  }, [user, location])
+ 
   return (
     <>
-      <HelmetProvider>
-        <Header></Header>
+      <DataContext.Provider value={{ setBookings, bookings }}>
+        <HelmetProvider>
+          <Header></Header>
 
-        <main className="animate-dissolve" ref={main}>
-          <Outlet></Outlet>
-        </main>
-      </HelmetProvider>
+          <main className="animate-dissolve" ref={main}>
+            <Outlet></Outlet>
+          </main>
+        </HelmetProvider>
+      </DataContext.Provider>
 
       <ScrollRestoration />
       <Toaster position="bottom-center" reverseOrder={false} />

@@ -11,6 +11,7 @@ import { useContext, useEffect } from 'react';
 import { Button } from '../utils/Button';
 import { useSecureReq } from '../hooks/useSecureReq';
 import { AuthContext } from '../providers/AuthProvider';
+import { DataContext } from '../Root';
 
 export const Room = () => {
   useEffect(() => {
@@ -19,6 +20,7 @@ export const Room = () => {
   const instance = useNormalReq();
   const secureReq = useSecureReq();
   const { user } = useContext(AuthContext);
+  const { bookings } = useContext(DataContext);
   const navigate = useNavigate();
 
   const params = useParams();
@@ -30,10 +32,12 @@ export const Room = () => {
       return data;
     },
   });
-  if (error) Toast('Something went wrong');
+  if (error) return Toast('Something went wrong');
 
   if (isPending) return;
   if (!data) return <Error alt={true}></Error>;
+  let booking;
+  if (data) booking = bookings.filter(e => e.roomId === data._id);
   const handleSubmit = e => {
     e.preventDefault();
 
@@ -53,17 +57,21 @@ export const Room = () => {
         uid: user.uid,
         email: user.email,
         roomId: data._id,
+        date: date,
       })
       .then(res => {
-        if(res.data.success) {
-          refetch()
-          Toast('Successfully booked the room')
-        }
+        if (res.data.success) {
+          refetch();
+          Toast('Successfully booked the room');
+          navigate('/booking');
+        } else Toast('Already booked or something is wrong');
       })
-      .catch(() => {
+      .catch(err => {
+        console.log(err.response);
         Toast('Something went wrong');
       });
   };
+
   return (
     <>
       <Helmet>
@@ -74,13 +82,14 @@ export const Room = () => {
         <h1 className="text-4xl font-bold">{data.room_type}</h1>
         <div className="mt-10">
           <Swiper navigation={{ nextEl: '.next', prevEl: '.prev' }} className="h-full w-full" mousewheel={false} loop={true} autoplay={{ delay: 3000 }}>
-            {data.room_images.map((image, i) => (
-              <SwiperSlide key={i}>
-                <figure className="h-[380px] hover:scale-[.99] transition-transform">
-                  <img className="object-cover rounded-lg hover:scale-[1.1] transition-transform" src={image} alt="" />
-                </figure>
-              </SwiperSlide>
-            ))}
+            {data &&
+              data?.room_images?.map((image, i) => (
+                <SwiperSlide key={i}>
+                  <figure className="h-[380px] hover:scale-[.99] transition-transform">
+                    <img className="object-cover rounded-lg hover:scale-[1.1] transition-transform" src={image} alt="" />
+                  </figure>
+                </SwiperSlide>
+              ))}
           </Swiper>
           <div className="flex items-center gap-6 mt-6 justify-end pr-2">
             <div className="w-4 h-4 rotate-180 stroke-black stroke-1 prev cursor-pointer">
@@ -94,20 +103,16 @@ export const Room = () => {
               </svg>
             </div>
           </div>
-          <div className="flex justify-between text-sm font-medium mt-16">
+          <div className="flex justify-between text-sm font-medium mt-16 gap-5 max-md:flex-wrap">
             <p>{data.room_description}</p>
-            <div className="whitespace-nowrap flex gap-10">
+            <div className="whitespace-nowrap flex gap-10 max-md:flex-wrap">
               <div>
                 <h4>Room Size</h4>
                 <h1 className="mt-1">{data.room_size}</h1>
               </div>
               <div>
                 <h4>Perks</h4>
-                <h1 className="flex gap-1 mt-1">
-                  {data.available_with_room.map((perk, i) => (
-                    <span key={i}>{perk}</span>
-                  ))}
-                </h1>
+                <h1 className="flex gap-1 mt-1 flex-wrap">{data && data.available_with_room.map((perk, i) => <span key={i}>{perk}</span>)}</h1>
               </div>
               <div>
                 <h1 className="font-bold">${data.price_per_night}</h1>
@@ -116,8 +121,8 @@ export const Room = () => {
             </div>
           </div>
           <div className="mt-10">
-            {data.remaining_count ? (
-              <form onSubmit={handleSubmit} className="flex items-center gap-5">
+            {data.remaining_count && !booking.length ? (
+              <form onSubmit={handleSubmit} className="flex items-center gap-5 max-md:flex-wrap">
                 <Button type="open">Book Now</Button>
                 <h4 className="text-neutral-400">Select a date: </h4>
                 <div>
@@ -125,7 +130,7 @@ export const Room = () => {
                 </div>
               </form>
             ) : (
-              <div className="bg-dark-white rounded-lg mt-8 px-8 py-6 font-semibold md:w-[400px]">Not Available</div>
+              <div className="bg-dark-white rounded-lg mt-8 px-8 py-6 font-semibold md:w-[400px]">{booking.length ? 'Already booked' : 'Not Available'}</div>
             )}
           </div>
         </div>
