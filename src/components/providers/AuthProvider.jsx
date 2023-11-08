@@ -28,33 +28,11 @@ const AuthProvider = ({ children }) => {
 
   const secureReq = useSecureReq();
 
-  const saveToCloud = user => {
-    secureReq
-      .post('/auth/add-user', user)
-      .then(res => {
-        saveToLocale(res.data.expires, 'expires');
-      })
-      .catch(err => {
-        console.log(err);
-        Toast('Something went wrong');
-      });
-  };
-
-  const getToken = user => {
-    secureReq
-      .post('/auth/get-token', user)
-      .then(res => {
-        saveToLocale(res.data.expires, 'expires');
-      })
-      .catch(err => {
-        console.log(err);
-        Toast('Something went wrong');
-      });
-  };
   const createUser = (email, password) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password).then(res => {
       saveToCloud(res.user);
+      saveToLocale({ email: res.user.email, uid: res.user.uid }, 'user');
       return res;
     });
   };
@@ -62,6 +40,7 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password).then(res => {
       getToken(res.user);
+      saveToLocale({ email: res.user.email, uid: res.user.uid }, 'user');
       return res;
     });
   };
@@ -74,6 +53,7 @@ const AuthProvider = ({ children }) => {
       } else {
         getToken(res.user);
       }
+      saveToLocale({ email: res.user.email, uid: res.user.uid }, 'user');
       return res;
     });
   };
@@ -95,9 +75,32 @@ const AuthProvider = ({ children }) => {
   const verifyEmail = () => sendEmailVerification(auth.currentUser);
   const resetPassword = email => sendPasswordResetEmail(auth, email);
 
+  const saveToCloud = user => {
+    secureReq
+      .post('/auth/add-user', user)
+      .then(res => {
+        saveToLocale(res.data.expires, 'expires');
+      })
+      .catch(() => {
+        Toast('Something went wrong');
+      });
+  };
+
+  const getToken = user => {
+    secureReq
+      .post('/auth/get-token', user)
+      .then(res => {
+        saveToLocale(res.data.expires, 'expires');
+      })
+      .catch(() => {
+        signOut();
+        Toast('Something went wrong');
+      });
+  };
+
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, currentUser => {
-      if(currentUser) saveToLocale({ email: currentUser.email, uid: currentUser.uid }, 'user')
+      if (currentUser) saveToLocale({ email: currentUser.email, uid: currentUser.uid }, 'user');
       setUser(currentUser);
       setLoading(false);
     });
