@@ -17,6 +17,7 @@ import { Room } from './components/pages/Room';
 import { Rooms } from './components/pages/Rooms';
 import { Bookings } from './components/pages/Bookings';
 import { Testimonials } from './components/pages/Testimonials';
+import { Careers } from './components/pages/Careers';
 
 const router = createBrowserRouter([
   {
@@ -68,6 +69,11 @@ const router = createBrowserRouter([
       {
         path: '/testimonials',
         element: <Testimonials></Testimonials>
+      },
+      {
+        path: '/careers',
+        element: <Careers></Careers>,
+        loader: async () => await fetch(import.meta.env.VITE_BACKENDSERVER + '/career')
       }
     ],
   },

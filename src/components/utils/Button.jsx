@@ -2,7 +2,7 @@ import { bool, func, node, string } from 'prop-types';
 
 export const Button = ({ children, noIcon, type, offset, className, iconClass, onClick }) => {
   return (
-    <button onClick={onClick} className={`flex justify-between items-center ${!offset ? 'bg-off-white py-4 px-6' : ''} rounded-full gap-24 ${className}` }>
+    <button onClick={onClick} className={`flex justify-between items-center ${!offset ? 'bg-off-white py-4 px-6' : ''} rounded-full ${className ? className : 'gap-24'}` }>
       <h1 className="font-bold uppercase text-sm">{children}</h1>
       {!noIcon && !type && (
         <div className={`w-3 h-3 ${iconClass}`}>

@@ -11,7 +11,7 @@ export const Header = ({ alt }) => {
   const [navOpen, setNavOpen] = useState(false);
   const { screen } = useContext(AppContext);
   const { user, signOutUser } = useContext(AuthContext);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSignOut = () => {
     signOutUser()
@@ -21,21 +21,21 @@ export const Header = ({ alt }) => {
       .catch(() => Toast('An error occurred. Please try again later'));
   };
   useEffect(() => {
-    if(location.state === '/contact') {
-      scroll(document.querySelector('.contact'))
-      location.state = '/'
+    if (location.state === '/contact') {
+      scroll(document.querySelector('.contact'));
+      location.state = '/';
     }
     setNavOpen(false);
   }, [location]);
 
   const showContact = () => {
-    setNavOpen(false)
-    if(location.pathname !== '/') {
-      navigate('/', { state: '/contact' })
-      return
+    setNavOpen(false);
+    if (location.pathname !== '/') {
+      navigate('/', { state: '/contact' });
+      return;
     }
-    scroll(document.querySelector('.contact'))
-  }
+    scroll(Math.max(document.documentElement.scrollHeight, document.body.scrollHeight));
+  };
 
   return (
     <header className="py-[.85rem] md:px-10 px-5 flex items-center text-sm justify-between sticky top-0 z-[999] transition-[padding,margin-top] duration-100">

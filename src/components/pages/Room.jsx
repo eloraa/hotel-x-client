@@ -206,7 +206,7 @@ export const Room = () => {
           <div className="mt-10">
             {!user || (data.remaining_count && booking && !booking.length) ? (
               <form onSubmit={handleSubmit} className="flex items-center gap-5 max-md:flex-wrap">
-                <Button className={popup ? 'pointer-events-none max-md:w-full' : ' max-md:w-full'} type="open">
+                <Button className={popup ? 'pointer-events-none max-md:w-full gap-16' : ' max-md:w-full gap-16'} type="open">
                   Book Now
                 </Button>
                 <h4 className="text-neutral-400">Select a date: </h4>
