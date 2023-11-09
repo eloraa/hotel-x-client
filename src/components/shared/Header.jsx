@@ -22,7 +22,7 @@ export const Header = ({ alt }) => {
   };
   useEffect(() => {
     if (location.state === '/contact') {
-      scroll(document.querySelector('.contact'));
+      scroll(Math.max(document.documentElement.scrollHeight, document.body.scrollHeight));
       location.state = '/';
     }
     setNavOpen(false);
