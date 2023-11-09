@@ -11,10 +11,12 @@ video {
 
 ::-webkit-scrollbar {
     width: 2px;
+    height: 2px;
     background: transparent;
 }
 ::-webkit-scrollbar-thumb {
     width: 2px;
+    height: 2px;
     background: #000;
     border-radius: 9999999px;
 }

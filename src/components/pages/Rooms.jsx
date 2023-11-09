@@ -53,10 +53,10 @@ export const Rooms = () => {
         <title>Room | Hotel</title>
       </Helmet>
       <div className="md:px-10 px-5 py-12 animate-dissolve-in">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between max-md:flex-wrap">
           <h1 className="font-bold text-4xl uppercase">Rooms</h1>
 
-          <div className="flex items-center gap-1 text-sm bg-off-white rounded-lg cursor-pointer relative">
+          <div className="flex items-center gap-1 text-sm bg-off-white rounded-lg cursor-pointer relative max-md:mt-10 max-md:w-full">
             <div className="flex items-center gap-1">
               <h4 className="text-neutral-400 absolute left-6">Sort By:</h4>
               <select name="sort" className="appearance-none outline-none bg-transparent border-none font-semibold py-4 pl-20 pr-16 z-10 cursor-pointer" onChange={handleChange} defaultValue={queryParams.get('sort')}>

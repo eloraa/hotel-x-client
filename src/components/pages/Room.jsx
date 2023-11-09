@@ -195,7 +195,7 @@ export const Room = () => {
                     ))}
                 </h1>
               </div>
-              <div>
+              <div className="max-md:flex justify-between max-md:w-full items-center">
                 <h1 className="font-bold text-right">${data.price_per_night}</h1>
                 <h1 className="mt-1 font-semibold">
                   Total Review - <b>{reviews ? reviews?.length : '0'}</b>
@@ -206,7 +206,7 @@ export const Room = () => {
           <div className="mt-10">
             {!user || (data.remaining_count && booking && !booking.length) ? (
               <form onSubmit={handleSubmit} className="flex items-center gap-5 max-md:flex-wrap">
-                <Button className={popup ? 'pointer-events-none' : ''} type="open">
+                <Button className={popup ? 'pointer-events-none max-md:w-full' : ' max-md:w-full'} type="open">
                   Book Now
                 </Button>
                 <h4 className="text-neutral-400">Select a date: </h4>
@@ -223,19 +223,21 @@ export const Room = () => {
                     <div className={`md:px-10 px-5 py-14 bg-white rounded-lg text-center max-md:w-full w-full transition-transform ${popup ? 'translate-y-0' : 'translate-y-1/4'}`}>
                       <h1 className="font-semibold">Review the room details</h1>
                       <div className="mt-12">
-                        <div className="flex gap-4 items-center">
-                          <h4 className="text-white-gray">Name:</h4>
-                          <h1>{data.room_type}</h1>
+                        <div className='max-md:px-6'>
+                          <div className="flex gap-4 items-center">
+                            <h4 className="text-white-gray">Name:</h4>
+                            <h1 className='whitespace-nowrap overflow-x-auto'>{data.room_type}</h1>
+                          </div>
+                          <div className="flex gap-4 items-center mt-4">
+                            <h4 className="text-white-gray">Price per night:</h4>
+                            <h1 className="font-semibold">${data.price_per_night}</h1>
+                          </div>
+                          <div className="flex gap-4 items-center mt-4">
+                            <h4 className="text-white-gray">Aperture:</h4>
+                            <h1 className="font-semibold">{currentDate}</h1>
+                          </div>
                         </div>
-                        <div className="flex gap-4 items-center mt-4">
-                          <h4 className="text-white-gray">Price per night:</h4>
-                          <h1 className="font-bold">${data.price_per_night}</h1>
-                        </div>
-                        <div className="flex gap-4 items-center mt-4">
-                          <h4 className="text-white-gray">Aperture:</h4>
-                          <h1 className='font-bold'>{currentDate}</h1>
-                        </div>
-                        <button className="bg-black w-full max-md:mt-6 py-3 text-white font-bold rounded-md active:scale-[.99] transition-transform text-sm mt-12">
+                        <button className="bg-black w-full py-3 text-white font-bold rounded-md active:scale-[.99] transition-transform text-sm mt-12 max-md:mt-16">
                           {isUpdating ? <Spinner></Spinner> : 'Confirm'}
                         </button>
                       </div>
