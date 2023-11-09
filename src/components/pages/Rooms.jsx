@@ -59,8 +59,15 @@ export const Rooms = () => {
           <div className="flex items-center gap-1 text-sm bg-off-white rounded-lg cursor-pointer relative max-md:mt-10 max-md:w-full">
             <div className="flex items-center gap-1">
               <h4 className="text-neutral-400 absolute left-6">Sort By:</h4>
-              <select name="sort" className="appearance-none outline-none bg-transparent border-none font-semibold py-4 pl-20 pr-16 z-10 cursor-pointer" onChange={handleChange} defaultValue={queryParams.get('sort')}>
-                <option disabled value="default">Sort</option>
+              <select
+                name="sort"
+                className="appearance-none outline-none bg-transparent border-none font-semibold py-4 pl-20 pr-16 z-10 cursor-pointer"
+                onChange={handleChange}
+                defaultValue={queryParams.get('sort')}
+              >
+                <option disabled value="default">
+                  Sort
+                </option>
                 <option value="high">Price High to Low</option>
                 <option value="low">Price Low to High</option>
               </select>
@@ -79,9 +86,21 @@ export const Rooms = () => {
                 <figure className="h-[320px] hover:scale-[.99] transition-transform overflow-hidden">
                   <img className="object-cover rounded-lg hover:scale-[1.1] transition-transform" src={room.room_images[0]} alt="" />
                 </figure>
-                <div className='flex justify-between items-center mt-5 font-semibold '>
+                <div className="flex justify-between items-center mt-5 font-semibold ">
                   <h1 className="text-lg">{room.room_type}</h1>
-                  <h4 className='text-sm'>${room.price_per_night}</h4>
+                  <h1 className="text-sm text-right flex justify-end">
+                    $
+                    {room.special_offer ? (
+                      <div className="flex">
+                        <div className="text-red strike line-through thick decoration-2">
+                          <span className="text-white-gray px-1">{room.price_per_night}</span>
+                        </div>
+                        {room.special_offer}
+                      </div>
+                    ) : (
+                      room.price_per_night
+                    )}
+                  </h1>
                 </div>
               </Link>
             </div>

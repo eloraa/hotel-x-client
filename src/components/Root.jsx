@@ -6,7 +6,6 @@ import { Toaster, useToaster } from 'react-hot-toast';
 import { HelmetProvider } from 'react-helmet-async';
 import { useSecureReq } from './hooks/useSecureReq';
 import { AuthContext } from './providers/AuthProvider';
-import { Toast } from './utils/Toast';
 import { getStoredValue } from './utils/localstorage';
 import moment from 'moment';
 
