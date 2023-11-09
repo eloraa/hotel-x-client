@@ -109,7 +109,7 @@ export const Header = ({ alt }) => {
           </div>
         </button>
 
-        <div className={`absolute top-full md:pt-10 max-md:left-0 max-md:px-5 pb-4 ${alt ? 'w-full md:w-[calc(100%+15rem)] md:right-0' : 'w-full'} ${navOpen ? '' : 'pointer-events-none'}`}>
+        <div className={`absolute top-[calc(100%+1rem)] md:pt-10 max-md:left-0 max-md:px-5 pb-4 ${alt ? 'w-full md:w-[calc(100%+15rem)] md:right-0' : 'w-full'} ${navOpen ? '' : 'pointer-events-none'}`}>
           <div className={`w-full bg-white rounded-lg py-8 px-4 font-semibold text-xl uppercase transition-[transform,opacity] duration-500 ${navOpen ? '' : '-rotate-2 translate-y-10 opacity-0'}`}>
             <ul>
               <li className="w-full">
