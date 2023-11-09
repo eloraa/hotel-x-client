@@ -60,7 +60,7 @@ export const Terms = () => {
         </div>
       </div>
 
-      <p className="text-neutral-300 mt-20">For project purpose only. it&apos;s made up. </p>
+      <p className="text-neutral-300 mt-20">For the project purpose only. it&apos;s made up. </p>
     </div>
   );
 };

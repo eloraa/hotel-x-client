@@ -77,7 +77,7 @@ export const Registration = () => {
             <div className="mt-6 text-center">
               <h4 className="text-xs">
                 By signing up you&apos;re agreeing to our{' '}
-                <Link href="/terms" className="font-semibold">
+                <Link to="/terms" className="font-semibold">
                   Terms of Service
                 </Link>
               </h4>
