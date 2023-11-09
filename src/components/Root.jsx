@@ -9,11 +9,12 @@ import { AuthContext } from './providers/AuthProvider';
 import { Toast } from './utils/Toast';
 import { getStoredValue } from './utils/localstorage';
 import moment from 'moment';
+import { ReviewProvider } from './providers/ReviewProvider';
 
 export const DataContext = createContext(null);
 export const Root = () => {
   const { setScreen } = useContext(AppContext);
-  const { user, getToken } = useContext(AuthContext)
+  const { user, getToken } = useContext(AuthContext);
   const locations = useLocation();
   const [isLoaded, setLoaded] = useState(false);
   const main = useRef();
@@ -79,34 +80,38 @@ export const Root = () => {
     setLoaded(true);
   }, [isLoaded, locations.pathname]);
 
-  const [bookings, setBookings] = useState(null)
-  const location = useLocation()
-  const instance = useSecureReq()
+  const [bookings, setBookings] = useState(null);
+  const location = useLocation();
+  const instance = useSecureReq();
   useEffect(() => {
-    if(user) {
-      instance.get('/booking/' + user.uid).then(res => {
-        setBookings(res.data)
-      })
-      .catch((err) => {
-        console.log(err);
-        Toast('Something went wrong')
-      })
+    if (user) {
+      instance
+        .get('/booking/' + user.uid)
+        .then(res => {
+          setBookings(res.data);
+        })
+        .catch(err => {
+          console.log(err);
+          Toast('Something went wrong');
+        });
 
-      if(moment(getStoredValue('expires')).isBefore()) getToken(user)
+      if (moment(getStoredValue('expires')).isBefore()) getToken(user);
     }
-  }, [user, location])
- 
+  }, [user, location]);
+
   return (
     <>
-      <DataContext.Provider value={{ setBookings, bookings }}>
-        <HelmetProvider>
-          <Header></Header>
+      <ReviewProvider>
+        <DataContext.Provider value={{ setBookings, bookings }}>
+          <HelmetProvider>
+            <Header></Header>
 
-          <main className="animate-dissolve" ref={main}>
-            <Outlet></Outlet>
-          </main>
-        </HelmetProvider>
-      </DataContext.Provider>
+            <main className="animate-dissolve" ref={main}>
+              <Outlet></Outlet>
+            </main>
+          </HelmetProvider>
+        </DataContext.Provider>
+      </ReviewProvider>
 
       <ScrollRestoration />
       <Toaster position="bottom-center" reverseOrder={false} />

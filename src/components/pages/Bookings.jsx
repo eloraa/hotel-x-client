@@ -111,7 +111,7 @@ export const Bookings = () => {
                   </figure>
                   <div>
                     <form onSubmit={e => handleSubmit(e, booking.roomId)} className="mt-6">
-                      <div className="mt-2 border-b border-dark-white relative flex items-center">
+                      <div className="mt-2 border-b border-dark-white relative flex items-center pb-4">
                         {isUpdating && (
                           <div className="absolute">
                             <input onClick={e => e.target.showPicker()} className="outline-none border-none appearance-none" type="date" name="date" min={new Date().toISOString().split('T')[0]} />
@@ -119,7 +119,7 @@ export const Bookings = () => {
                         )}
                         <Button
                           offset={true}
-                          className={`w-full pb-4 [&>.icon]:w-4 [&>.icon]:h-4 [&>.icon]:transition-transform ${isUpdating ? '[&>.icon]:-100' : '[&>.icon]:scale-0'}`}
+                          className={`w-full [&>.icon]:w-4 [&>.icon]:h-4 [&>.icon]:transition-transform ${isUpdating ? '[&>.icon]:-100' : '[&>.icon]:scale-0'}`}
                           iconClass="icon"
                         >
                           Update

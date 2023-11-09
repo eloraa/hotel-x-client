@@ -13,6 +13,8 @@ import { useSecureReq } from '../hooks/useSecureReq';
 import { AuthContext } from '../providers/AuthProvider';
 import { DataContext } from '../Root';
 import { RatingsInput } from '../utils/RatingsInput';
+import { Reviews } from '../shared/Reviews';
+import { ReviewContext } from '../providers/ReviewProvider';
 
 export const Room = () => {
   useEffect(() => {
@@ -22,8 +24,9 @@ export const Room = () => {
   const secureReq = useSecureReq();
   const { user } = useContext(AuthContext);
   const { bookings } = useContext(DataContext);
-  const [popup, setPopup] = useState(false)
+  const [popup, setPopup] = useState(false);
   const navigate = useNavigate();
+  const { reviews, setRefresh, refresh } = useContext(ReviewContext);
 
   const params = useParams();
 
@@ -34,13 +37,13 @@ export const Room = () => {
       return data;
     },
   });
-  if (error) return Toast('Something went wrong');
 
+  if (error) return Toast('Something went wrong');
   if (isPending) return;
   if (!data) return <Error alt={true}></Error>;
 
-
   let booking;
+
   if (data && bookings) booking = bookings.filter(e => e.roomId === data._id);
   const handleSubmit = e => {
     e.preventDefault();
@@ -105,14 +108,17 @@ export const Room = () => {
         date,
         details,
         roomId: data._id,
+        rating
       })
       .then(res => {
         if (res.data.success) {
-          setPopup(false)
+          setPopup(false);
+          setRefresh(!refresh)
           Toast('Successfully added the review');
         } else Toast('something went wrong');
       })
       .catch(err => {
+        setRefresh(!refresh)
         console.log(err.response);
         Toast('Something went wrong');
       });
@@ -163,7 +169,9 @@ export const Room = () => {
               </div>
               <div>
                 <h1 className="font-bold text-right">${data.price_per_night}</h1>
-                <h1 className="mt-1 font-semibold">Total Review 12</h1>
+                <h1 className="mt-1 font-semibold">
+                  Total Review - <b>{reviews ? reviews?.length : '0'}</b>
+                </h1>
               </div>
             </div>
           </div>
@@ -178,7 +186,12 @@ export const Room = () => {
               </form>
             ) : (
               <>
-                <div className={`fixed inset-0 [background:linear-gradient(90deg,rgba(155,155,155,.35)_0%,rgba(255,255,255,0.20)_8.55%,rgba(255,255,255,_0.20)_97.55%,rgba(155,155,155,.35)_100%),linear-gradient(0deg,rgba(11,11,18,0.10)_0%,rgba(11,11,18,0.00)_100%)] flex items-center justify-center transition-opacity z-10 popup ${popup ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} onClick={(e) => e.target.classList.contains('popup') && setPopup(false) }>
+                <div
+                  className={`fixed inset-0 [background:linear-gradient(90deg,rgba(155,155,155,.35)_0%,rgba(255,255,255,0.20)_8.55%,rgba(255,255,255,_0.20)_97.55%,rgba(155,155,155,.35)_100%),linear-gradient(0deg,rgba(11,11,18,0.10)_0%,rgba(11,11,18,0.00)_100%)] flex items-center justify-center transition-opacity z-10 popup ${
+                    popup ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                  }`}
+                  onClick={e => e.target.classList.contains('popup') && setPopup(false)}
+                >
                   <div className="flex flex-col justify-center items-center w-full md:px-10 px-5 md:w-[28rem] max-w-md">
                     <div className="md:px-10 px-5 py-14 bg-white rounded-lg text-center max-md:w-full w-full">
                       <h1 className="font-semibold">Write us a Review</h1>
@@ -213,6 +226,8 @@ export const Room = () => {
             )}
           </div>
         </div>
+
+        <Reviews roomId={data._id}></Reviews>
       </div>
     </>
   );
