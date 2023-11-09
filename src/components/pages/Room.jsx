@@ -233,7 +233,7 @@ export const Room = () => {
                         </div>
                         <div className="flex gap-4 items-center mt-4">
                           <h4 className="text-white-gray">Aperture:</h4>
-                          <h1>{currentDate}</h1>
+                          <h1 className='font-bold'>{currentDate}</h1>
                         </div>
                         <button className="bg-black w-full max-md:mt-6 py-3 text-white font-bold rounded-md active:scale-[.99] transition-transform text-sm mt-12">
                           {isUpdating ? <Spinner></Spinner> : 'Confirm'}

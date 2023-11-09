@@ -8,7 +8,6 @@ export const Testimonials = () => {
   const instance = useNormalReq();
   const { isPending, error, data } = useQuery({
     queryKey: ['reviews'],
-    enabled: true,
     refetchOnMount: true,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
