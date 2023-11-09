@@ -13,7 +13,7 @@ import moment from 'moment';
 export const DataContext = createContext(null);
 export const Root = () => {
   const { setScreen } = useContext(AppContext);
-  const { user, getToken } = useContext(AuthContext);
+  const { user, getToken, loading } = useContext(AuthContext);
   const locations = useLocation();
   const [isLoaded, setLoaded] = useState(false);
   const main = useRef();
@@ -83,7 +83,7 @@ export const Root = () => {
   const location = useLocation();
   const instance = useSecureReq();
   useEffect(() => {
-    if (user) {
+    if (user && !loading) {
       instance
         .get('/booking/' + user.uid)
         .then(res => {
@@ -96,7 +96,7 @@ export const Root = () => {
 
       if (moment(getStoredValue('expires')).isBefore()) getToken(user);
     }
-  }, [user, location]);
+  }, [user, location, loading]);
 
   return (
     <>

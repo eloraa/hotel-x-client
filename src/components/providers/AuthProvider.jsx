@@ -27,34 +27,13 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const secureReq = useSecureReq();
-  const saveToCloud = user => {
-    secureReq
-      .post('/auth/add-user', user)
-      .then(res => {
-        saveToLocale(res.data.expires, 'expires');
-      })
-      .catch(() => {
-        Toast('Something went wrong');
-      });
-  };
 
-  const getToken = user => {
-    secureReq
-      .post('/auth/get-token', user)
-      .then(res => {
-        saveToLocale(res.data.expires, 'expires');
-      })
-      .catch(() => {
-        signOut();
-        Toast('Something went wrong');
-      });
-  };
+  const removeToken = () => secureReq.post('/auth/remove-token').catch(() => {});
+
   const updateCloudUser = user => {
-    secureReq
-      .post('/auth/update-user', user)
-      .catch(() => {
-        Toast('Something went wrong');
-      });
+    secureReq.post('/auth/update-user', user).catch(() => {
+      Toast('Something went wrong');
+    });
   };
   const createUser = (email, password) => {
     setLoading(true);
@@ -89,6 +68,7 @@ const AuthProvider = ({ children }) => {
   const signOutUser = () => {
     clearStorage('expires');
     clearStorage('user');
+    removeToken()
     setLoading(true);
     return signOut(auth);
   };
@@ -99,15 +79,42 @@ const AuthProvider = ({ children }) => {
       photoURL,
     }).then(() => {
       updateCloudUser(auth.currentUser);
-    })
+    });
   };
 
   const verifyEmail = () => sendEmailVerification(auth.currentUser);
   const resetPassword = email => sendPasswordResetEmail(auth, email);
 
+  const saveToCloud = user => {
+    secureReq
+      .post('/auth/add-user', user)
+      .then(res => {
+        saveToLocale(res.data.expires, 'expires');
+      })
+      .catch(() => {
+        Toast('Something went wrong');
+      });
+  };
+
+  const getToken = user => {
+    setLoading(true)
+    secureReq
+      .post('/auth/get-token', user)
+      .then(res => {
+        setLoading(false)
+        saveToLocale(res.data.expires, 'expires');
+      })
+      .catch(() => {
+        setLoading(false)
+        signOut();
+        Toast('Something went wrong');
+      });
+  };
+
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, currentUser => {
       if (currentUser) saveToLocale({ email: currentUser.email, uid: currentUser.uid }, 'user');
+      else removeToken()
       setUser(currentUser);
       setLoading(false);
     });
