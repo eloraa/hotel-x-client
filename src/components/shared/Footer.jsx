@@ -106,8 +106,8 @@ export const Footer = () => {
           </li>
         </ul>
       </div>
-      <div className="absolute inset-x-0 flex items-center justify-center bottom-10 md:bottom-9">
-        <button onClick={() => scroll(0)} className="bg-white font-bold uppercase text-sm py-4 px-6 rounded-full flex items-center gap-11">
+      <div className="absolute inset-x-0 flex items-center justify-center bottom-10 md:bottom-9 mx-auto pointer-events-none">
+        <button onClick={() => scroll(0)} className="bg-white font-bold uppercase text-sm py-4 px-6 rounded-full flex items-center gap-11 pointer-events-auto">
           <div className="w-5 h-3">
             <svg>
               <use xlinkHref="/assets/vector/symbols.svg#arrow-top"></use>
@@ -121,7 +121,7 @@ export const Footer = () => {
           </div>
         </button>
       </div>
-      <div className="absolute inset-x-0 md:w-1/2 bottom-0 h-1/2 bg-black mx-auto -z-10 [background:linear-gradient(90deg,#FFF_0%,rgba(255,255,255,0.00)_25.56%,rgba(255,255,255,0.00)_78.08%,#FFF_100%),linear-gradient(0deg,rgba(11,11,18,0.10)_0%,rgba(11,11,18,0.00)_100%);]"></div>
+      <div className="absolute inset-x-0 md:w-1/2 bottom-0 h-1/2 bg-black mx-auto -z-10 [background:linear-gradient(90deg,#FFF_0%,rgba(255,255,255,0.00)_25.56%,rgba(255,255,255,0.00)_78.08%,#FFF_100%),linear-gradient(0deg,rgba(11,11,18,0.10)_0%,rgba(11,11,18,0.00)_100%);] pointer-events-none"></div>
     </footer>
   );
 };

@@ -18,6 +18,7 @@ import { Rooms } from './components/pages/Rooms';
 import { Bookings } from './components/pages/Bookings';
 import { Testimonials } from './components/pages/Testimonials';
 import { Careers } from './components/pages/Careers';
+import { Terms } from './components/pages/Terms';
 
 const router = createBrowserRouter([
   {
@@ -79,6 +80,10 @@ const router = createBrowserRouter([
         path: '/gallery',
         element: <Gallery></Gallery>,
       },
+      {
+        path: '/terms',
+        element: <Terms></Terms>
+      }
     ],
   },
 ]);
