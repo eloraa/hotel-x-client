@@ -19,6 +19,7 @@ import { Bookings } from './components/pages/Bookings';
 import { Testimonials } from './components/pages/Testimonials';
 import { Careers } from './components/pages/Careers';
 import { Terms } from './components/pages/Terms';
+import { Faq } from './components/pages/Faq';
 
 const router = createBrowserRouter([
   {
@@ -82,8 +83,12 @@ const router = createBrowserRouter([
       },
       {
         path: '/terms',
-        element: <Terms></Terms>
-      }
+        element: <Terms></Terms>,
+      },
+      {
+        path: '/faq',
+        element: <Faq></Faq>,
+      },
     ],
   },
 ]);
