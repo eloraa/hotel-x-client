@@ -147,7 +147,7 @@ export const Room = () => {
   return (
     <>
       <Helmet>
-        <title>Room | Hotel</title>
+        <title>{data.room_type} | Hotel</title>
       </Helmet>
 
       <div className="md:px-10 px-5 py-12 animate-dissolve-in">
