@@ -49,16 +49,21 @@ const router = createBrowserRouter([
       },
       {
         path: '/rooms',
-        element: <Rooms></Rooms>
+        element: <Rooms></Rooms>,
       },
       {
         path: '/room/:id',
-        element: <Room></Room>
+        element: <Room></Room>,
+        loader: async ({ params }) => await fetch(`${import.meta.env.VITE_BACKENDSERVER}/review/${params.id}`),
       },
       {
         path: '/booking',
-        element: <PrivateRoute><Bookings></Bookings></PrivateRoute>
-      }
+        element: (
+          <PrivateRoute>
+            <Bookings></Bookings>
+          </PrivateRoute>
+        ),
+      },
     ],
   },
 ]);

@@ -9,7 +9,6 @@ import { AuthContext } from './providers/AuthProvider';
 import { Toast } from './utils/Toast';
 import { getStoredValue } from './utils/localstorage';
 import moment from 'moment';
-import { ReviewProvider } from './providers/ReviewProvider';
 
 export const DataContext = createContext(null);
 export const Root = () => {
@@ -101,7 +100,6 @@ export const Root = () => {
 
   return (
     <>
-      <ReviewProvider>
         <DataContext.Provider value={{ setBookings, bookings }}>
           <HelmetProvider>
             <Header></Header>
@@ -111,7 +109,6 @@ export const Root = () => {
             </main>
           </HelmetProvider>
         </DataContext.Provider>
-      </ReviewProvider>
 
       <ScrollRestoration />
       <Toaster position="bottom-center" reverseOrder={false} />

@@ -2,7 +2,7 @@ import 'swiper/css';
 import { Helmet } from 'react-helmet-async';
 import { useNormalReq } from '../hooks/useNormalReq';
 import { useQuery } from '@tanstack/react-query';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLoaderData, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Toast } from '../utils/Toast';
 import { Error } from '../shared/Error';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -13,8 +13,8 @@ import { useSecureReq } from '../hooks/useSecureReq';
 import { AuthContext } from '../providers/AuthProvider';
 import { DataContext } from '../Root';
 import { RatingsInput } from '../utils/RatingsInput';
-import { Reviews } from '../shared/Reviews';
-import { ReviewContext } from '../providers/ReviewProvider';
+import { Ratings } from '../utils/Ratings';
+import { Spinner } from '../utils/Spinner';
 
 export const Room = () => {
   useEffect(() => {
@@ -26,9 +26,8 @@ export const Room = () => {
   const { bookings } = useContext(DataContext);
   const [popup, setPopup] = useState(false);
   const navigate = useNavigate();
-  const { reviews, setRefresh, refresh } = useContext(ReviewContext);
-
-  const params = useParams();
+  const [reviews, setReviews] = useState(useLoaderData());
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const { refetch, isPending, error, data } = useQuery({
     queryKey: ['room'],
@@ -37,6 +36,10 @@ export const Room = () => {
       return data;
     },
   });
+
+  const location = useLocation();
+
+  const params = useParams();
 
   if (error) return Toast('Something went wrong');
   if (isPending) return;
@@ -81,6 +84,7 @@ export const Room = () => {
 
   const handleReview = e => {
     e.preventDefault();
+    if (isUpdating) return;
 
     if (!user) {
       navigate('/login', { state: location.pathname });
@@ -100,25 +104,29 @@ export const Room = () => {
       );
     if (!name || !details || !rating || name === '' || details === '' || rating === '') return Toast('Check your input value');
 
+    setIsUpdating(true);
+    const datareview = {
+      uid: user.uid,
+      email: user.email,
+      name,
+      date,
+      details,
+      roomId: data._id,
+      rating,
+    };
     secureReq
-      .post('/review', {
-        uid: user.uid,
-        email: user.email,
-        name,
-        date,
-        details,
-        roomId: data._id,
-        rating
-      })
+      .post('/review', datareview)
       .then(res => {
         if (res.data.success) {
           setPopup(false);
-          setRefresh(!refresh)
+          setReviews([...reviews, { ...datareview, photoURL: user.photoURL }]);
+          e.target.reset()
+          setIsUpdating(false);
           Toast('Successfully added the review');
         } else Toast('something went wrong');
       })
       .catch(err => {
-        setRefresh(!refresh)
+        setIsUpdating(false);
         console.log(err.response);
         Toast('Something went wrong');
       });
@@ -205,7 +213,9 @@ export const Room = () => {
                         <div className="w-full flex items-center gap-4 py-4">
                           <RatingsInput className="w-full flex items-center justify-center gap-5" iconClass="bg-blue"></RatingsInput>
                         </div>
-                        <button className="bg-black w-full max-md:mt-6 py-5 text-white font-bold rounded-md active:scale-[.99] transition-transform text-sm">Submit</button>
+                        <button className="bg-black w-full max-md:mt-6 py-5 text-white font-bold rounded-md active:scale-[.99] transition-transform text-sm">
+                          {isUpdating ? <Spinner></Spinner> : 'Submit'}
+                        </button>
                       </form>
                     </div>
                   </div>
@@ -227,7 +237,31 @@ export const Room = () => {
           </div>
         </div>
 
-        <Reviews roomId={data._id}></Reviews>
+        {reviews && reviews.length ? (
+          <div className="py-28">
+            <h1 className="text-xl font-semibold">User Review</h1>
+            <div className="mt-16 grid md:grid-cols-3 xl:grid-cols-4 gap-10">
+              {reviews.map((review, i) => (
+                <div key={i} className="py-10 px-8 bg-[#f4f4f4] rounded-lg">
+                  <div className="flex items-center gap-4">
+                    <figure className="w-10 h-10 overflow-hidden rounded-full">
+                      <img className="object-cover" src={review?.photoURL ? review?.photoURL : '/assets/images/placeholder/profile.png'} alt="" />
+                    </figure>
+                    <div>
+                      <h1>{review?.name}</h1>
+                      <h1>
+                        <Ratings className="text-blue [&>div>.icon]:w-3 [&>div>.icon]:h-3 gap-2" iconClass="icon" count={parseInt(review?.rating)}></Ratings>
+                      </h1>
+                    </div>
+                  </div>
+                  <p className="mt-10">{review.details}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          ''
+        )}
       </div>
     </>
   );
