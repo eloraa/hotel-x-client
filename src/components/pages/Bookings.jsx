@@ -91,7 +91,7 @@ export const Bookings = () => {
   };
 
   return (
-    <div className="md:px-10 px-5 py-12">
+    <div className="md:px-10 px-5 py-12 animate-dissolve-in">
       <h1 className="text-4xl font-bold uppercase">Your Bookings</h1>
       <div className="mt-16">
         {bookings && bookings.length ? (

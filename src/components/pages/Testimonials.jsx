@@ -8,6 +8,10 @@ export const Testimonials = () => {
   const instance = useNormalReq();
   const { isPending, error, data } = useQuery({
     queryKey: ['reviews'],
+    enabled: true,
+    refetchOnMount: true,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
     queryFn: async () => {
       const { data } = await instance.get('/review');
       return data;
@@ -16,7 +20,7 @@ export const Testimonials = () => {
   if (isPending) return;
   if (error) return Toast('Something went wrong');
   return (
-    <div>
+    <div className='animate-dissolve-in'>
       <div className="relative xl:h-screen [background:linear-gradient(0deg,rgba(11,11,18,0.00)_0%,rgba(11,11,18,0.10)_17.63%,rgba(11,11,18,0.10)_71.99%,rgba(11,11,18,0.00)_96.88%)] flex flex-wrap items-center justify-between xl:justify-around md:px-10 px-5 gap-10 max-xl:py-16">
         <div className="px-10 py-12 bg-white rounded-lg xl:w-1/3 md:w-1/2 md:max-w-xs">
           <p className="font-medium leading-6 text-sm">
@@ -64,7 +68,7 @@ export const Testimonials = () => {
         </div>
       </div>
       {data && data.length && (
-        <div className="relative z-10 bg-white max-xl:mt-[50vh] py-32 md:px-10 px-5">
+        <div className="relative z-10 bg-white py-32 md:px-10 px-5">
           <h1 className="text-center text-4xl font-bold">WHAT OUR USER SAYS</h1>
           <div className="grid md:grid-cols-3 xl:grid-cols-4 gap-10 mt-28">
             {data.map((review, i) => (

@@ -23,6 +23,10 @@ export const Rooms = () => {
     },
   });
   const { isPending, error, data } = useQuery({
+    enabled: false,
+    refetchOnMount: true,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
     queryKey: ['rooms'],
     queryFn: () => getData(),
   });
@@ -49,7 +53,7 @@ export const Rooms = () => {
       <Helmet>
         <title>Room | Hotel</title>
       </Helmet>
-      <div className="md:px-10 px-5 py-12">
+      <div className="md:px-10 px-5 py-12 animate-dissolve-in">
         <div className="flex items-center justify-between">
           <h1 className="font-bold text-4xl uppercase">Rooms</h1>
 

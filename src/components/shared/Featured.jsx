@@ -15,6 +15,10 @@ export const Featured = () => {
   const instance = useNormalReq();
 
   const { isPending, error, data } = useQuery({
+    enabled: false,
+    refetchOnMount: true,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
     queryKey: ['featuredRooms'],
     queryFn: async () => {
       const { data } = await instance.get('/rooms/featured')

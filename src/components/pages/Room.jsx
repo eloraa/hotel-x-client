@@ -31,6 +31,10 @@ export const Room = () => {
   const queryClient = useQueryClient();
 
   const { refetch, isPending, error, data } = useQuery({
+    enabled: false,
+    refetchOnMount: true,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
     queryKey: ['room'],
     queryFn: async () => {
       const { data } = await instance.get('/rooms/' + params.id);
@@ -140,7 +144,7 @@ export const Room = () => {
         <title>Room | Hotel</title>
       </Helmet>
 
-      <div className="md:px-10 px-5 py-12">
+      <div className="md:px-10 px-5 py-12 animate-dissolve-in">
         <h1 className="text-4xl font-bold">{data.room_type}</h1>
 
         <div className="mt-10">
