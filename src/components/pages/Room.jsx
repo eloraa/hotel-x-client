@@ -25,10 +25,11 @@ export const Room = () => {
   const secureReq = useSecureReq();
   const { user } = useContext(AuthContext);
   const { bookings } = useContext(DataContext);
-  const [popup, setPopup] = useState(false);
+  const [popup, setPopup] = useState(0);
   const navigate = useNavigate();
   const [reviews, setReviews] = useState(useLoaderData());
   const [isUpdating, setIsUpdating] = useState(false);
+  const [currentDate, setCurrentDate] = useState(null);
   const queryClient = useQueryClient();
 
   const { refetch, isPending, error, data } = useQuery({
@@ -67,6 +68,12 @@ export const Room = () => {
       return;
     }
 
+    if (popup !== 2) {
+      setCurrentDate(e.target.date.value);
+      setPopup(2);
+      return;
+    }
+
     secureReq
       .post('/booking/book', {
         uid: user.uid,
@@ -77,7 +84,7 @@ export const Room = () => {
       .then(res => {
         if (res.data.success) {
           refetch();
-          queryClient.invalidateQueries({ queryKey: ['reviews'] })
+          queryClient.invalidateQueries({ queryKey: ['reviews'] });
           Toast('Successfully booked the room');
           navigate('/booking');
         } else Toast('Already booked or something is wrong');
@@ -90,8 +97,7 @@ export const Room = () => {
 
   const handleReview = e => {
     e.preventDefault();
-    if (isUpdating) return;
-
+    if (isUpdating || popup !== 1) return;
     if (!user) {
       navigate('/login', { state: location.pathname });
       return;
@@ -124,15 +130,15 @@ export const Room = () => {
       .post('/review', datareview)
       .then(res => {
         if (res.data.success) {
-          setPopup(false);
+          setPopup(0);
           setReviews([...reviews, { ...datareview, photoURL: user.photoURL }]);
-          e.target.reset()
-          setIsUpdating(false);
+          e.target.reset();
+          setIsUpdating(0);
           Toast('Successfully added the review');
         } else Toast('something went wrong');
       })
       .catch(err => {
-        setIsUpdating(false);
+        setIsUpdating(0);
         console.log(err.response);
         Toast('Something went wrong');
       });
@@ -179,7 +185,15 @@ export const Room = () => {
               </div>
               <div>
                 <h4>Perks</h4>
-                <h1 className="flex gap-1 mt-1 flex-wrap font-semibold">{data && data.available_with_room.map((perk, i) => <span key={i}>{perk}{i === data?.available_with_room.length - 1 ? '.' : ','}</span>)}</h1>
+                <h1 className="flex gap-1 mt-1 flex-wrap font-semibold">
+                  {data &&
+                    data.available_with_room.map((perk, i) => (
+                      <span key={i}>
+                        {perk}
+                        {i === data?.available_with_room.length - 1 ? '.' : ','}
+                      </span>
+                    ))}
+                </h1>
               </div>
               <div>
                 <h1 className="font-bold text-right">${data.price_per_night}</h1>
@@ -192,22 +206,53 @@ export const Room = () => {
           <div className="mt-10">
             {!user || (data.remaining_count && booking && !booking.length) ? (
               <form onSubmit={handleSubmit} className="flex items-center gap-5 max-md:flex-wrap">
-                <Button type="open">Book Now</Button>
+                <Button className={popup ? 'pointer-events-none' : ''} type="open">
+                  Book Now
+                </Button>
                 <h4 className="text-neutral-400">Select a date: </h4>
                 <div>
-                  <input type="date" name="date" min={new Date().toISOString().split('T')[0]} />
+                  <input className={popup ? 'pointer-events-none' : ''} type="date" name="date" min={new Date().toISOString().split('T')[0]} />
+                </div>
+                <div
+                  className={`fixed inset-0 [background:linear-gradient(90deg,rgba(155,155,155,.35)_0%,rgba(255,255,255,0.20)_8.55%,rgba(255,255,255,_0.20)_97.55%,rgba(155,155,155,.35)_100%),linear-gradient(0deg,rgba(11,11,18,0.10)_0%,rgba(11,11,18,0.00)_100%)] flex items-center justify-center transition-opacity duration-500 z-10 popup ${
+                    popup ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                  }`}
+                  onClick={e => e.target.classList.contains('popup') && setPopup(0)}
+                >
+                  <div className="flex flex-col justify-center items-center w-full md:px-10 px-5 md:w-[28rem] max-w-md">
+                    <div className={`md:px-10 px-5 py-14 bg-white rounded-lg text-center max-md:w-full w-full transition-transform ${popup ? 'translate-y-0' : 'translate-y-1/4'}`}>
+                      <h1 className="font-semibold">Review the room details</h1>
+                      <div className="mt-12">
+                        <div className="flex gap-4 items-center">
+                          <h4 className="text-white-gray">Name:</h4>
+                          <h1>{data.room_type}</h1>
+                        </div>
+                        <div className="flex gap-4 items-center mt-4">
+                          <h4 className="text-white-gray">Price per night:</h4>
+                          <h1 className="font-bold">${data.price_per_night}</h1>
+                        </div>
+                        <div className="flex gap-4 items-center mt-4">
+                          <h4 className="text-white-gray">Aperture:</h4>
+                          <h1>{currentDate}</h1>
+                        </div>
+                        <button className="bg-black w-full max-md:mt-6 py-3 text-white font-bold rounded-md active:scale-[.99] transition-transform text-sm mt-12">
+                          {isUpdating ? <Spinner></Spinner> : 'Confirm'}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </form>
             ) : (
               <>
                 <div
-                  className={`fixed inset-0 [background:linear-gradient(90deg,rgba(155,155,155,.35)_0%,rgba(255,255,255,0.20)_8.55%,rgba(255,255,255,_0.20)_97.55%,rgba(155,155,155,.35)_100%),linear-gradient(0deg,rgba(11,11,18,0.10)_0%,rgba(11,11,18,0.00)_100%)] flex items-center justify-center transition-opacity z-10 popup ${
-                    popup ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                  className={`fixed inset-0 [background:linear-gradient(90deg,rgba(155,155,155,.35)_0%,rgba(255,255,255,0.20)_8.55%,rgba(255,255,255,_0.20)_97.55%,rgba(155,155,155,.35)_100%),linear-gradient(0deg,rgba(11,11,18,0.10)_0%,rgba(11,11,18,0.00)_100%)] flex items-center justify-center transition-opacity duration-500 z-10 popup ${
+                    popup === 1 ? 'opacity-100' : 'opacity-0 pointer-events-none'
                   }`}
-                  onClick={e => e.target.classList.contains('popup') && setPopup(false)}
+                  onClick={e => e.target.classList.contains('popup') && setPopup(0)}
                 >
                   <div className="flex flex-col justify-center items-center w-full md:px-10 px-5 md:w-[28rem] max-w-md">
-                    <div className="md:px-10 px-5 py-14 bg-white rounded-lg text-center max-md:w-full w-full">
+                    <div className={`md:px-10 px-5 py-14 bg-white rounded-lg text-center max-md:w-full w-full transition-transform ${popup ? 'translate-y-0' : 'translate-y-1/4'}`}>
                       <h1 className="font-semibold">Write us a Review</h1>
                       <form onSubmit={handleReview} className="mt-6 grid gap-4">
                         <div className="w-full">
@@ -230,7 +275,12 @@ export const Room = () => {
                   {booking && booking.length ? (
                     <div className="flex items-center justify-between flex-wrap md:gap-10 max-md:justify-center text-center">
                       <h4>You have already booked this room</h4>
-                      <Button onClick={() => setPopup(true)} offset={true} className="gap-x-6 [&>.icon]:stroke-1 [&>.icon]:stroke-blue max-md:mt-8 text-blue" iconClass="icon">
+                      <Button
+                        onClick={() => setPopup(1)}
+                        offset={true}
+                        className={`gap-x-6 [&>.icon]:stroke-1 [&>.icon]:stroke-blue max-md:mt-8 text-blue transition-opacity ${popup ? 'opacity-0' : 'opacity-100'}`}
+                        iconClass="icon"
+                      >
                         Write us a review
                       </Button>
                     </div>
