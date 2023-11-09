@@ -199,7 +199,7 @@ export const Room = () => {
                 <h1 className="font-bold text-right flex justify-end">
                   $
                   {data.special_offer ? (
-                    <div className='flex'>
+                    <div className="flex">
                       <div className="text-red strike line-through thick decoration-2">
                         <span className="text-white-gray px-1">{data.price_per_night}</span>
                       </div>
@@ -242,8 +242,23 @@ export const Room = () => {
                           </div>
                           <div className="flex gap-4 items-center mt-4">
                             <h4 className="text-white-gray">Price per night:</h4>
-                            <h1 className="font-semibold">${data.price_per_night}</h1>
+                            <h1 className="font-semibold flex">
+                              $
+                              {data.special_offer ? (
+                                <div className="text-red strike line-through thick decoration-2">
+                                  <span className="text-white-gray px-1">{data.price_per_night}</span>
+                                </div>
+                              ) : (
+                                data.price_per_night
+                              )}
+                            </h1>
                           </div>
+                          {data.special_offer && (
+                            <div className="flex gap-4 items-center mt-4">
+                              <h4 className="text-white-gray">Special price:</h4>
+                              <h1 className="font-semibold">${data.special_offer}</h1>
+                            </div>
+                          )}
                           <div className="flex gap-4 items-center mt-4">
                             <h4 className="text-white-gray">Aperture:</h4>
                             <h1 className="font-semibold">{currentDate}</h1>
