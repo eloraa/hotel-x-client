@@ -131,6 +131,23 @@ export const Header = ({ alt }) => {
               </li>
               <li className="w-full">
                 <NavLink
+                  to="/gallery"
+                  className={({ isActive }) =>
+                    isActive
+                      ? 'text-blue py-3 px-6 block pointer-events-none [&>div]:hidden'
+                      : 'hover:bg-blue/[.08] w-full rounded-full py-3 px-6 transition-[background-color] duration-200 flex justify-between items-center group'
+                  }
+                >
+                  Gallery
+                  <div className="w-4 h-4 transition-transform scale-0 group-hover:scale-100 duration-500">
+                    <svg>
+                      <use xlinkHref="/assets/vector/symbols.svg#arrow-right"></use>
+                    </svg>
+                  </div>
+                </NavLink>
+              </li>
+              <li className="w-full">
+                <NavLink
                   to="/rooms"
                   className={({ isActive }) =>
                     isActive

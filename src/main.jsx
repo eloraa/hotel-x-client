@@ -68,13 +68,17 @@ const router = createBrowserRouter([
       },
       {
         path: '/testimonials',
-        element: <Testimonials></Testimonials>
+        element: <Testimonials></Testimonials>,
       },
       {
         path: '/careers',
         element: <Careers></Careers>,
-        loader: async () => await fetch(import.meta.env.VITE_BACKENDSERVER + '/career')
-      }
+        loader: async () => await fetch(import.meta.env.VITE_BACKENDSERVER + '/career'),
+      },
+      {
+        path: '/gallery',
+        element: <Gallery></Gallery>,
+      },
     ],
   },
 ]);

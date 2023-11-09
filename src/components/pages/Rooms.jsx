@@ -7,10 +7,10 @@ import { useQueryParams } from '../hooks/useQueryParams';
 import { useEffect } from 'react';
 
 export const Rooms = () => {
-  const instance = useNormalReq();
   const queryParams = useQueryParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const instance = useNormalReq();
 
   const getData = async () => {
     const { data } = await instance.get('/rooms');
