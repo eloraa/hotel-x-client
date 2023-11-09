@@ -89,9 +89,7 @@ export const Root = () => {
         .then(res => {
           setBookings(res.data);
         })
-        .catch(err => {
-          console.log(err);
-          Toast('Something went wrong');
+        .catch(() => {
         });
 
       if (moment(getStoredValue('expires')).isBefore()) getToken(user);
