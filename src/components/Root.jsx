@@ -37,7 +37,7 @@ export const Root = () => {
       }
     }, 500);
 
-    if (locations.pathname === '/login' || locations.pathname === '/register') {
+    if (locations.pathname === '/login' || locations.pathname === '/register' || document.querySelector('._fluid')) {
       setScreen('fluid');
     } else {
       setScreen(null);

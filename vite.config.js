@@ -14,5 +14,6 @@ export default defineConfig({
     VITE_MESSAGINGSENDERID: process.env.VITE_MESSAGINGSENDERID,
     VITE_APPID: process.env.VITE_APPID,
     VITE_BACKENDSERVER: process.env.VITE_BACKENDSERVER,
+    VITE_TOMTOMKEY: process.env.VITE_TOMTOMKEY
   },
 });

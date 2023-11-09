@@ -1,12 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { scroll } from '../utils/utils';
 import { Toast } from '../utils/Toast';
 import axios from 'axios';
+import { createMap } from '../utils/createMap';
+import '@tomtom-international/web-sdk-maps/dist/maps.css';
 
 export const Footer = () => {
   const [isSubbed, setIsSubbed] = useState(false);
   const [validMail, setValidMail] = useState(false);
+
+  useEffect(() => {
+    createMap(28.94772, 52.23164, 'map');
+  }, []);
 
   const handleEmail = e => {
     if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(e.target.value)) setValidMail(true);
@@ -46,7 +52,6 @@ export const Footer = () => {
   };
   return (
     <footer className="md:px-10 px-5 contact relative md:h-screen bg-white mt-[120vh] z-10 py-12 pt-24 md:pt-32 md:flex-col md:flex max-md:pb-32">
-      <div className="max-md:hidden h-1/5"></div>
       <div className="grid md:grid-cols-2 md:gap-28">
         <div>
           <h1 className="max-w-sm text-3xl md:text-5xl">Subscribe to our newsletter</h1>
@@ -89,6 +94,7 @@ export const Footer = () => {
           </div>
         </div>
       </div>
+      <div id="map" className="h-[320px] rounded-lg overflow-hidden mt-10 mb-24"></div>
       <div className="flex items-center justify-between font-medium mt-32 flex-wrap md:mt-auto">
         <p className="max-md:text-center max-md:w-full">©2023 Hotel Inc. All Right Reserved.</p>
         <ul className="flex items-center gap-5 max-md:w-full max-md:mt-8 max-md:text-xs justify-between">

@@ -23,7 +23,6 @@ export const Rooms = () => {
     },
   });
   const { isPending, error, data } = useQuery({
-    enabled: false,
     refetchOnMount: true,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,

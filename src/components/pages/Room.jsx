@@ -31,7 +31,6 @@ export const Room = () => {
   const queryClient = useQueryClient();
 
   const { refetch, isPending, error, data } = useQuery({
-    enabled: false,
     refetchOnMount: true,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
