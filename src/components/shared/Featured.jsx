@@ -15,7 +15,6 @@ export const Featured = () => {
   const instance = useNormalReq();
 
   const { isPending, error, data } = useQuery({
-    enabled: false,
     refetchOnMount: true,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
