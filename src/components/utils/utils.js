@@ -29,7 +29,7 @@ export const scroll = y => {
   if (scrollTo === window.scrollY) return;
   gsap.to(scrolling, {
     value: scrollTo,
-    duration: 1,
+    duration: scrollTo ? 2 : 1.5,
     ease: 'power1.ease',
     onUpdate: () => window.scrollTo(0, scrolling.value),
   });
