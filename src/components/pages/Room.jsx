@@ -15,6 +15,7 @@ import { DataContext } from '../Root';
 import { RatingsInput } from '../utils/RatingsInput';
 import { Spinner } from '../utils/Spinner';
 import { Review } from '../shared/Review';
+import moment from 'moment';
 
 export const Room = () => {
   useEffect(() => {
@@ -96,7 +97,7 @@ export const Room = () => {
       return;
     }
 
-    const date = new Date();
+    const date = moment().format('YYYY-MM-DD');
     const name = e.target.name.value;
     const details = e.target.details.value;
     const rating = e.target.rating.value;

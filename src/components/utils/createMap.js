@@ -1,7 +1,7 @@
 import tt from "@tomtom-international/web-sdk-maps";
 let map
 export const createMap = (lat, long, container) => {
-    if(map) return
+    if(map || !import.meta.env.VITE_TOMTOMKEY) return
     map = tt.map({
         key: import.meta.env.VITE_TOMTOMKEY,
         container: container,
