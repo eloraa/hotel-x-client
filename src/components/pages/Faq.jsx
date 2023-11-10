@@ -4,7 +4,14 @@ export const Faq = () => {
       <h1 className="text-center text-4xl font-bold">Frequently Asked Questions</h1>
       <div className="mt-20 grid gap-10">
         <div className="px-8 py-14 bg-[#f4f4f4] rounded-lg">
-          <h1>How do I make a reservation at Hotel?</h1>
+          <div className="flex justify-between items-center">
+            <h1>How do I make a reservation at Hotel?</h1>
+            <div className="w-4 h-4 stroke-black stroke-1">
+              <svg>
+                <use xlinkHref="/assets/vector/symbols.svg#arrow-right"></use>
+              </svg>
+            </div>
+          </div>
           <p className="mt-6 font-semibold">
             Making a reservation is easy. You can book directly on our website or contact our reservations team at <b>help@hotel.com</b>.
           </p>
@@ -32,7 +39,7 @@ export const Faq = () => {
         <div className="px-8 py-14 bg-[#f4f4f4] rounded-lg">
           <h1>What time is check-in and check-out?</h1>
           <p className="mt-6 font-semibold">
-            Check-in time is [insert check-in time], and check-out time is [insert check-out time]. If you need an early check-in or late check-out, please contact our front desk in advance to check
+            Check-in time is <b>20:00</b>, and check-out time is <b>06:00</b>. If you need an early check-in or late check-out, please contact our front desk in advance to check
             availability.
           </p>
         </div>

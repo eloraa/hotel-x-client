@@ -65,7 +65,7 @@ export const Header = ({ alt }) => {
       </Link>
       <div className="flex items-center gap-6 md:relative">
         {!alt && (
-          <button className={`hover:text-white rounded-full p-5 relative group transition-colors max-h-[55px] ${navOpen || screen === 'fluid' ? 'bg-white' : 'bg-dark-white'}`}>
+          <button className={`hover:text-white rounded-full p-5 relative group transition-colors max-h-[55px] max-md:hidden ${navOpen || screen === 'fluid' ? 'bg-white' : 'bg-dark-white'}`}>
             <div className="absolute inset-0 bg-blue rounded-full scale-0 transition-transform group-hover:scale-100"></div>
             <div className="w-4 h-4 z-10 relative">
               <svg>
@@ -79,16 +79,27 @@ export const Header = ({ alt }) => {
           (location.pathname === '/login' || location.pathname === 'register' ? (
             location.pathname === '/login' ? (
               <Link to="/register">
-                <button className="bg-black text-white rounded-full py-4 px-10 font-semibold uppercase max-md:hidden">Register</button>
+                <button className="bg-black text-white rounded-full py-4 px-10 font-semibold uppercase">Register</button>
               </Link>
             ) : (
               <Link to="/login">
-                <button className="bg-black text-white rounded-full py-4 px-10 font-semibold uppercase max-md:hidden">Login</button>
+                <button className="bg-black text-white rounded-full py-4 px-10 font-semibold uppercase">Login</button>
               </Link>
             )
           ) : user ? (
-            <button onClick={handleSignOut} className="bg-black text-white rounded-full py-4 px-10 font-semibold uppercase max-md:hidden">
-              Logout
+            <button
+              onClick={handleSignOut}
+              className={`bg-black text-white rounded-full md:py-4 md:px-10 p-4 font-semibold uppercase ${
+                navOpen || screen === 'fluid' ? 'max-md:bg-white max-md:text-black' : 'max-md:bg-dark-white max-md:text-black'
+              }`}
+            >
+              <span className="max-md:hidden">Logout</span>
+
+              <div className="h-5 w-5 md:hidden stroke-black stroke-2">
+                <svg>
+                  <use xlinkHref="/assets/vector/symbols.svg#logout"></use>
+                </svg>
+              </div>
             </button>
           ) : (
             <Link to="/login">
@@ -109,7 +120,9 @@ export const Header = ({ alt }) => {
           </div>
         </button>
 
-        <div className={`absolute top-[calc(100%+1rem)] md:pt-10 max-md:left-0 max-md:px-5 pb-4 ${alt ? 'w-full md:w-[calc(100%+15rem)] md:right-0' : 'w-full'} ${navOpen ? '' : 'pointer-events-none'}`}>
+        <div
+          className={`absolute top-[calc(100%+1rem)] md:pt-10 max-md:left-0 max-md:px-5 pb-4 ${alt ? 'w-full md:w-[calc(100%+15rem)] md:right-0' : 'w-full'} ${navOpen ? '' : 'pointer-events-none'}`}
+        >
           <div className={`w-full bg-white rounded-lg py-8 px-4 font-semibold text-xl uppercase transition-[transform,opacity] duration-500 ${navOpen ? '' : '-rotate-2 translate-y-10 opacity-0'}`}>
             <ul>
               <li className="w-full">

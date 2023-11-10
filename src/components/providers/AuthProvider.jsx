@@ -34,6 +34,7 @@ const AuthProvider = ({ children }) => {
         saveToLocale(res.data.expires, 'expires');
       })
       .catch(() => {
+        saveToCloud(user)
         Toast('Something went wrong');
       });
   };
