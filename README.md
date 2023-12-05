@@ -1,14 +1,14 @@
-# Labela
+# Hotel
 It's a simple hotel managment project based on React and Firebase. and backend with Express and MongoDB
 
 ## Live Link
-[https://eloraa.github.io/labela/](https://eloraa.github.io/lablea/?from=git)
+[https://eloraa.github.io/hotel-x/](https://eloraa.github.io/hotel-x/?from=git)
 
 ## Getting Started
 To get you started you can simply clone the repository:
 
 ```
-git clone https://github.com/eloraa/labela
+git clone https://github.com/eloraa/hotel-x
 ```
 and install the dependencies
 ```
