@@ -43,12 +43,12 @@ export const Gallery = () => {
         <title>Gallery | Hotel</title>
       </Helmet>
 
-      <main className="overflow-hidden h-screen">
+      <main className="overflow-hidden pb-[20rem] pt-16">
         <div ref={galleryRef} className="gallery">
           {data &&
             data.length &&
             data.map(room => (
-              <Link to={'/room/' + room._id} key={room._id} className="gallery__item" data-img={room.room_images[0]}>
+              <Link to={window.matchMedia('(pointer: coarse)').matches ? '' : '/room/' + room._id} key={room._id} className="gallery__item" data-img={room.room_images[0]}>
                 <span className="gallery__item-text" data-splitting>
                   <div className="word">{room.room_type}</div>
                 </span>

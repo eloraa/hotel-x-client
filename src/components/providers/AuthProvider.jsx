@@ -44,7 +44,7 @@ const AuthProvider = ({ children }) => {
       .post('/auth/get-token', user)
       .then(res => {
         setLoading(false);
-        saveToLocale(res.data.expires, 'expires');
+        saveToLocale(res.data.expires, 'expires', false);
       })
       .catch(() => {
         setLoading(false);
@@ -90,7 +90,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const signOutUser = () => {
-    clearStorage('expires');
+    clearStorage('token');
     clearStorage('user');
     removeToken();
     setLoading(true);

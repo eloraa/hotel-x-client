@@ -63,7 +63,7 @@ export const Rooms = () => {
                 name="sort"
                 className="appearance-none outline-none bg-transparent border-none font-semibold py-4 pl-20 pr-16 z-10 cursor-pointer"
                 onChange={handleChange}
-                defaultValue={queryParams.get('sort')}
+                defaultValue={queryParams.get('sort') || 'default'}
               >
                 <option disabled value="default">
                   Sort

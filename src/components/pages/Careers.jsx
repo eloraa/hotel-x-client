@@ -1,12 +1,13 @@
 import moment from 'moment';
 import { useLoaderData } from 'react-router-dom';
 import { Button } from '../utils/Button';
+import { viewport } from '../utils/utils';
 
 export const Careers = () => {
   const data = useLoaderData();
   return (
-    <div className="md:px-10 px-5 py-12 [background:linear-gradient(0deg,rgba(11,11,18,0.10)_0%,rgba(11,11,18,0.08)_75.19%,rgba(11,11,18,0.00)_96.88%)]">
-      <h1 className="text-4xl font-bold uppercase">Career opportunity</h1>
+    <div className="md:px-10 px-5 py-12 [background:linear-gradient(0deg,rgba(11,11,18,0.10)_0%,rgba(11,11,18,0.08)_75.19%,rgba(11,11,18,0.00)_96.88%)]" style={{ height: viewport().height }}>
+      <h1 className="text-4xl font-bold uppercase h1">Career opportunity</h1>
 
       <div className="mt-24 grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
         {data && data.length

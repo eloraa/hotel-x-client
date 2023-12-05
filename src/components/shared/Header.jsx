@@ -103,7 +103,7 @@ export const Header = ({ alt }) => {
             </button>
           ) : (
             <Link to="/login">
-              <button className="bg-black text-white rounded-full py-4 px-10 font-semibold uppercase max-md:hidden">Login</button>
+              <button className="bg-black text-white rounded-full py-4 px-10 font-semibold uppercase">Login</button>
             </Link>
           ))}
 

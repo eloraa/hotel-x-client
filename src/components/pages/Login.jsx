@@ -66,7 +66,7 @@ export const Login = () => {
       </Helmet>
       <Effect></Effect>
       <div className="flex flex-col justify-center items-center w-full md:px-10 px-5 md:w-[28rem] max-w-md">
-        <div className="md:px-10 px-5 py-14 bg-white rounded-lg text-center max-md:w-full w-full">
+        <div className="px-10 py-14 bg-white rounded-lg text-center max-md:w-full w-full">
           <h1 className="font-semibold">Login to Continue</h1>
           <form ref={formRef} onSubmit={handleFormSubmit} className="mt-6 grid gap-4">
             <div className="w-full">
@@ -84,7 +84,7 @@ export const Login = () => {
             </div>
           </form>
         </div>
-        <button onClick={handleGoogleLogin} className="bg-white py-6 w-full rounded-lg mt-4 flex items-center gap-3 font-medium md:px-10 px-5">
+        <button onClick={handleGoogleLogin} className="bg-white py-6 w-full rounded-lg mt-4 flex items-center gap-3 font-medium px-10">
           <div className="w-5 h-5">
             <svg>
               <use xlinkHref="/assets/vector/symbols.svg#google"></use>

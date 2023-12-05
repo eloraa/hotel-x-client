@@ -51,17 +51,6 @@ export const Home = () => {
         filter: 'grayscale(.5)',
       });
 
-      let sections = gsap.utils.toArray('sections');
-
-      sections.forEach((section, i) => {
-        ScrollTrigger.create({
-          trigger: section,
-          start: 'bottom bottom',
-          pin: i === sections.length - 1 ? false : true,
-          end: i === 0 ? '+=200%' : '+=100%',
-          pinSpacing: false,
-        });
-      });
     }
   }, []);
 
